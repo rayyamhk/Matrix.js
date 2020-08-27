@@ -17,7 +17,8 @@
     "no-plusplus": "off",
     "linebreak-style": ["error", "windows"],
     "no-underscore-dangle": "off",
-    "no-continue": "off"
+    "no-continue": "off",
+    "no-use-before-define": "off"
   },
   "ignorePatterns": [
     "build/*.js"
