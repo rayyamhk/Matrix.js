@@ -1,4 +1,4 @@
-const Matrix = require('../../index');
+const Matrix = require('../..');
 
 describe('should be skew symmetric matrix', () => {
   const matrices = [

@@ -1,4 +1,4 @@
-const Matrix = require('../../index');
+const Matrix = require('../..');
 const { INVALID_ROW_COL } = require('../../Error');
 
 describe('should generate random matrix', () => {

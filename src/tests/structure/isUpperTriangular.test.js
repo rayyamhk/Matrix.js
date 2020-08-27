@@ -1,4 +1,4 @@
-const Matrix = require('../../index');
+const Matrix = require('../..');
 
 describe('should be upper triangular matrix', () => {
   const matrices = [

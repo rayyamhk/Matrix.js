@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-const Matrix = require('../../index');
+const Matrix = require('../..');
 
 describe('should be orthogonal matrix', () => {
   const { sin } = Math;

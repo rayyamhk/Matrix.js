@@ -1,4 +1,4 @@
-const Matrix = require('../../index');
+const Matrix = require('../..');
 
 describe('should be square matrix', () => {
   const matrices = [

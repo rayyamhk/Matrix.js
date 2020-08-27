@@ -1,4 +1,4 @@
-const Matrix = require('../../index');
+const Matrix = require('../..');
 
 describe('should clone correct matrix', () => {
   for (let i = 1; i < 5; i++) {

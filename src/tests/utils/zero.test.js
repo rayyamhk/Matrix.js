@@ -1,4 +1,4 @@
-const Matrix = require('../../index');
+const Matrix = require('../..');
 
 describe('should get zero matrix', () => {
   it('should get 1x1', () => {
