@@ -1,5 +1,5 @@
-/lib
+/src
 .eslintrc
 .gitignore
-webpack.config.js
+.babelrc
 package-lock.json
