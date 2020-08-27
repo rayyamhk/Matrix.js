@@ -1,4 +1,4 @@
-const Matrix = require('../../index');
+const Matrix = require('../..');
 const { INVALID_ROW_COL, OVERFLOW_INDEX } = require('../../Error');
 
 describe('should get correct matrix entry', () => {
