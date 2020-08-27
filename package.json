@@ -1,0 +1,59 @@
+{
+  "name": "@rayyamhk/matrix",
+  "version": "1.0.0",
+  "author": "Ray Yam",
+  "contributors": [
+    "Ray Yam"
+  ],
+  "description": "A professional, comprehensive and high-performance library for you to manipulate matrices.",
+  "keywords": [
+    "Math",
+    "Mathematics",
+    "Complex Number",
+    "Matrix",
+    "Vector",
+    "Algebra",
+    "Linear Algebra",
+    "Linear Equations",
+    "Eigenvalues",
+    "Inverse",
+    "Determinant",
+    "LU decomposition",
+    "QR decomposition"
+  ],
+  "homepage": "https://github.com/rayyamhk/Matrix.js",
+  "bugs": {
+    "url": "https://github.com/rayyamhk/Matrix.js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rayyamhk/Matrix.js.git"
+  },
+  "license": "MIT",
+  "main": "build/matrix.js",
+  "scripts": {
+    "build": "npm run test && webpack",
+    "test": "eslint && jest --testPathPattern=lib/tests"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run test"
+    }
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/preset-env": "^7.11.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "eslint": "^7.7.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-jest": "^23.20.0",
+    "husky": "^4.2.5",
+    "jest": "^26.1.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  },
+  "dependencies": {
+    "@rayyamhk/complex": "^1.0.4"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "parser": "babel-eslint",
+  "plugins": [
+    "jest"
+  ],
+  "extends": [
+    "airbnb-base",
+    "plugin:jest/all"
+  ],
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jest/globals": true
+  },
+  "rules": {
+    "no-plusplus": "off",
+    "linebreak-style": ["error", "windows"],
+    "no-underscore-dangle": "off",
+    "no-continue": "off"
+  },
+  "ignorePatterns": [
+    "build/*.js"
+  ]
+}
