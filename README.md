@@ -47,21 +47,21 @@ npm run test
 It runs all tests in `/src/tests`
 
 ## API
-- [constructor](#constructorA)
+- [constructor](#constructora)
 - [Decompositions](#decompositions)
-  - [LU](#LUA-optimized)
-  - [QR](#QRA)
+  - [LU](#lua-optimized)
+  - [QR](#qra)
 - [Linear Equations](#linear-equations)
-  - [backward](#backwardU-y)
-  - [forward](#forwardL-y)
-  - [solve](#solveA-y)
+  - [backward](#backwardu-y)
+  - [forward](#forwardl-y)
+  - [solve](#solvea-y)
 - [Operations](#operations)
-  - [add](#addA-B)
-  - [inverse](#inverseA)
-  - [multiply](#multiplyA-B)
-  - [pow](#powA-n)
-  - [subtract](#subtractA-B)
-  - [transpose](#transposeA)
+  - [add](#adda-b)
+  - [inverse](#inversea)
+  - [multiply](#multiplya-b)
+  - [pow](#powa-n)
+  - [subtract](#subtracta-b)
+  - [transpose](#transposea)
 - [Properties](#properties)
   - [cond](#condp--2)
   - [det](#det)
@@ -80,18 +80,18 @@ It runs all tests in `/src/tests`
   - [isSymmetric](#issymmetricdigit--8)
   - [isUpperTriangular](#isuppertriangulardigit--8)
 - [Utilities](#utilities)
-  - [clone](#cloneA)
-  - [column](#columnA-index)
+  - [clone](#clonea)
+  - [column](#columna-index)
   - [diag](#diagvalues)
-  - [elementwise](#elementwiseA-cb)
+  - [elementwise](#elementwisea-cb)
   - [entry](#entryrow-col)
   - [generate](#generaterow-col-cb)
-  - [getDiag](#getdiagA)
+  - [getDiag](#getdiaga)
   - [getRandomMatrix](#getrandommatrixrow-col-min--0-max--1-tofixed--0)
   - [identity](#identitysize)
-  - [isEqual](#isequalA-B-digit--5)
-  - [row](#rowA-index)
-  - [submatrix](#submatrixA-rowsexp-colsexp)
+  - [isEqual](#isequala-b-digit--5)
+  - [row](#rowa-index)
+  - [submatrix](#submatrixa-rowsexp-colsexp)
   - [toString](#tostring)
   - [zero](#zerorow-col)
 
@@ -119,7 +119,7 @@ new Matrix([
   [7, 8, 9],
 ]); // 3x3 matrix
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 ### Decompositions
 
@@ -143,7 +143,7 @@ const [P, LU] = Matrix.LU(A, true);
 // P is [ 1, 0 ], LU = [[6, 3], [2/3, 1]]
 // Note: P is an permutation array, L and U can be extracted from LU.
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### QR(A)
 ```
@@ -163,7 +163,7 @@ const [Q, R] = Matrix.QR(A);
 // R is [[-14, -21, 14], [0, -175, 70], [0, 0, -35]],
 // and A = QR
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 ### Linear-Equations
 
@@ -191,7 +191,7 @@ try {
   console.log(e.message);
 }
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### forward(L, y)
 ```
@@ -217,7 +217,7 @@ try {
   console.log(e.message);
 }
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### solve(A, y)
 ```
@@ -243,7 +243,7 @@ try {
   console.log(e.message);
 }
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 ### Operations
 
@@ -266,7 +266,7 @@ const B = new Matrix([
 
 const Sum = Matrix.add(A, B); // [[6, 8], [10, 12]]
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### inverse(A)
 ```
@@ -286,7 +286,7 @@ try {
   console.log(e.message);
 }
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### multiply(A, B)
 ```
@@ -308,7 +308,7 @@ const B = new Matrix([
 
 const Product = Matrix.multiply(A, B); // [[-10, -12], [-19, -24]]
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### pow(A, n)
 ```
@@ -325,7 +325,7 @@ const A = new Matrix([
 
 const Result = Matrix.pow(A, 10); // [[1024, 0], [0, 1024]]
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### subtract(A, B)
 ```
@@ -346,7 +346,7 @@ const B = new Matrix([
 
 const Diff = Matrix.subtract(A, B); // [[-3, -1], [1, 3]]
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### transpose(A)
 ```
@@ -361,7 +361,7 @@ const A = new Matrix([
 
 const T = Matrix.transpose(A); // [[1, 4], [2, 5], [3, 6]]
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 ### Properties
 
@@ -383,7 +383,7 @@ A.cond(2); // 32.844126527227147
 A.cond(Infinity); // 42.4999,
 A.cond('F'); // 34.117851306578174
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### det()
 ```
@@ -400,7 +400,7 @@ const A = new Matrix([
 
 A.det(); // -376
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### eigenvalues()
 ```
@@ -422,7 +422,7 @@ eigenvalues.forEach((eigenvalue) => {
 
 // Result: '10.7046681565572', '-12.9152701010176', '15.1053009722302 + 14.3131819845827i', '15.1053009722302 - 14.3131819845827i'
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### norm(p)
 ```
@@ -445,7 +445,7 @@ A.norm(2); // 15.849881886952135
 A.norm(Infinity); // 27
 A.norm('F'); // 21.447610589527216
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### nullity()
 ```
@@ -461,7 +461,7 @@ const A = new Matrix([
 
 A.nullity(); // 1
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### rank()
 ```
@@ -477,7 +477,7 @@ const A = new Matrix([
 
 A.rank(); // 2
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### size()
 ```
@@ -492,7 +492,7 @@ const A = new Matrix([
 
 const [row, col] = A.size(); // 2, 4
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### trace()
 ```
@@ -508,7 +508,7 @@ const A = new Matrix([
 
 A.trace(); // 15
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 ### Structure
 
@@ -534,7 +534,7 @@ const B = new Matrix([
 A.isDiagonal(); // true
 B.isDiagonal(); // false
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### isLowerTriangular(digit = 8)
 ```
@@ -551,7 +551,7 @@ const A = new Matrix([
 
 A.isLowerTriangular(); // true
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### isOrthogonal(digit = 8)
 ```
@@ -567,7 +567,7 @@ const Reflection = new Matrix([
 
 Reflection.isOrthongonal(); // true
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### isSkewSymmetric(digit = 8)
 ```
@@ -585,7 +585,7 @@ const A = new Matrix([
 
 A.isSkewSymmetric(); // true
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### isSquare()
 ```
@@ -599,7 +599,7 @@ const A = new Matrix([
 ]);
 A.isSquare(); // true
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### isSymmetric(digit = 8)
 ```
@@ -616,7 +616,7 @@ const A = new Matrix([
 
 A.isSymmetric(); // true
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### isUpperTriangular(digit = 8)
 ```
@@ -633,7 +633,7 @@ const A = new Matrix([
 
 A.isUpperTriangular(); // true
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 ### Utilities
 
@@ -651,7 +651,7 @@ const A = new Matrix([
 
 Matrix.clone(A); // [[1, 2], [3, 4]]
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### column(A, index)
 ```
@@ -669,7 +669,7 @@ const A = new Matrix([
 Matrix.column(A, 0); // [[1], [3], [5]]
 Matrix.column(A, 1); // [[2], [4], [6]]
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### diag(values)
 ```
@@ -693,7 +693,7 @@ const values = [
 
 Matrix.diag(values); // [[1, 2, 0, 0], [3, 4, 0, 0], [0, 0, 5, 6], [0, 0, 7, 8]]
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### elementwise(A, cb)
 ```
@@ -707,7 +707,7 @@ Matrix.elementwise(A, (entry) => entry * 2); // element-wise multiplication
 Matrix.elementwise(A, (entry) => entry ** 2); // element-wise power
 Matrix.elementwise(A, (entry) => entry - 10); // element-wise subtraction
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### entry(row, col)
 ```
@@ -726,7 +726,7 @@ A.entry(0, 1); // 2
 A.entry(1, 0); // 3
 A.entry(1, 1); // 4
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### generate(row, col, cb)
 ```
@@ -740,7 +740,7 @@ Matrix.generate(3, 3, () => 0); // 3 x 3 zero matrix
 Matrix.generate(3, 3, (i, j) => 1 / (i + j + 1)); // 3 x 3 Hilbert matrix
 Matrix.generate(3, 3, (i, j) => i >= j ? 1 : 0); // 3 x 3 lower triangular matrix
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### getDiag(A)
 ```
@@ -755,7 +755,7 @@ const A = new Matrix([
 
 Matrix.getDiag(A); // [1, 6]
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### getRandomMatrix(row, col, min = 0, max = 1, toFixed = 0)
 ```
@@ -769,7 +769,7 @@ Matrix.getDiag(A); // [1, 6]
 ```
 Matrix.getRandomMatrix(3, 4, -10, 10, 2); // 3 x 4 matrix which entries are bounded by -10 and 10 and has 2 decimal places
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### identity(size)
 ```
@@ -781,7 +781,7 @@ Generate identity matrix with given size.
 Matrix.identity(2); // 2 x 2 identity matrix
 Matrix.identity(10); // 10 x 10 identity matrix
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### isEqual(A, B, digit = 5)
 ```
@@ -811,7 +811,7 @@ const C = new Matrix([
 
 Matrix.isEqual(A, C); // false
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### row(A, index)
 ```
@@ -828,7 +828,7 @@ const A = new Matrix([
 Matrix.row(A, 0); // [[1, 2, 3]]
 Matrix.row(A, 1); // [[4, 5, 6]]
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### submatrix(A, rowsExp, colsExp)
 ```
@@ -851,7 +851,7 @@ Matrix.submatrix(A, '0:1', '0:1'); [[1, 2], [4, 5]], row 0 + row 1 & column 0 + 
 Matrix.submatrix(A, ':', '1:2'); [[2, 3], [5, 6], [8,9]], all rows && column 1 + column 2
 Matrix.submatrix(A, ':', ':'); same with A
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### toString()
 ```
@@ -869,7 +869,7 @@ A.toString(); // '1 2 3\n4 5 6\n7 8 9'
 // 4 5 6
 // 7 8 9
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 #### zero(row, col)
 ```
@@ -882,7 +882,7 @@ Generate a zero matrix
 Matrix.zero(3, 4); // 3 x 4 zero matrix
 Matrix.zero(10, 1); // 10 x 1 zero matrix
 ```
-[Table of Content](#API)
+[Table of Content](#api)
 
 ## How to contribute
 You are welcome to contribute by:
