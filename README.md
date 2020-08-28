@@ -62,7 +62,7 @@ It runs all tests in `/src/tests`
   - [subtract](#subtractA-B)
   - [transpose](#transposeA)
 - [Properties](#properties)
-  - [cond](#condp)
+  - [cond](#condp--2)
   - [det](#det)
   - [eigenvalues](#eigenvalues)
   - [norm](#normp)
@@ -356,69 +356,493 @@ const T = Matrix.transpose(A); // [[1, 4], [2, 5], [3, 6]]
 
 ### Properties
 
-#### cond(p)
+#### cond(p = 2)
+```
+@param { Number | String } p - Type of matrix norm, it can be 1, 2, Infinity or 'F'
+@return { Number } - Returns the condition number of matrix
+```
+Find the condition number of square matrix with respect to different matrix norm. If the matrix is singular, returns Infinity. The condition number is **not cached**.
+```
+const A = new Matrix([
+  [1, 2, 3],
+  [4, 5, 6],
+  [1, 2, 7],
+]);
+
+A.cond(1); // 64
+A.cond(2); // 32.844126527227147
+A.cond(Infinity); // 42.4999,
+A.cond('F'); // 34.117851306578174
+```
 
 #### det()
+```
+@return { Number } - Returns the determinant of square matrirx
+```
+Find the determinant of square matrirx. The determinant is **cached**.
+```
+const A = new Matrix([
+  [1, 3, 5, 9],
+  [1, 3, 1, 7],
+  [4, 3, 9, 7],
+  [5, 2, 0, 9],
+]);
+
+A.det(); // -376
+```
 
 #### eigenvalues()
+```
+@return { Array } - Returns array of eigenvalues
+```
+Find the eigenvalues of any square matrix using QR Algorithm. The eigenvalues can be either real number or complex number. Note that all eigenvalues are instance of **Complex**, for more details please visit [Complex.js](https://github.com/rayyamhk/Complex.js). The eigenvalues are **cached**.
+```
+const A = new Matrix([
+  [13, -12, 6, -9],
+  [1, -11, -13, 0],
+  [-6, -2, 15, -6],
+  [14, -8, 1, 11],
+]);
+
+const eigenvalues = A.eigenvalues();
+eigenvalues.forEach((eigenvalue) => {
+  console.log(eigenvalue.toString()); // Instance method of Complex
+});
+
+// Result: '10.7046681565572', '-12.9152701010176', '15.1053009722302 + 14.3131819845827i', '15.1053009722302 - 14.3131819845827i'
+```
 
 #### norm(p)
+```
+@param { Number | String } p - The choice of matrix norm, it can be 1, 2, Infinity or 'F'
+@return { Number } - Returns p-norm of the matrix.
+```
+Find the matrix norm of any matrix with respect to the choice of norm. The norms are **not cached**.
+```
+const A = new Matrix([
+  [1, 7, -5, 2, -7],
+  [-8, 0, 2, 9, 4],
+  [3, 4, 9, 6, 5],
+]);
+A.norm(1); // 17
+A.norm(2); // 15.849881886952135
+A.norm(Infinity); // 27
+A.norm('F'); // 21.447610589527216
+```
 
 #### nullity()
+```
+@return { Number } - Returns the nullity of the matrix
+```
+Find the nullity of any matrix. The nullity is **cached**.
+```
+const A = new Matrix([
+  [0, 1, 2],
+  [1, 2, 1],
+  [2, 7, 8],
+]);
 
+A.nullity(); // 1
+```
 #### rank()
+```
+@return { Number } - Returns the rank of the matrix
+```
+Find the rank of any matrix. The rank is **cached**.
+```
+const A = new Matrix([
+  [0, 1, 2],
+  [1, 2, 1],
+  [2, 7, 8],
+]);
+
+A.rank(); // 2
+```
 
 #### size()
+```
+@return { Array } - Returns the number of rows and columns of a matrix.
+```
+Find the size of any matrix, which is in the form of \[row, column\]. The size of matrix is **cached**.
+```
+const A = new Matrix([
+  [0, 1, 2, 3],
+  [4, 5, 6, 7],
+]);
 
+const [row, col] = A.size(); // 2, 4
+```
 #### trace()
+```
+@return { Number } - Returns the trace of the square matrix.
+```
+Find the trace of any square matrix. The trace is **cached**.
+```
+const A = new Matrix([
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+]);
 
-#### Static methods
+A.trace(); // 15
+```
 
 ### Structure
 
 #### isDiagonal(digit = 8)
+```
+@param { Number } digit - Number of significant digits
+@return { Boolean } - Returns true if the matrix is diagonal matrix
+```
+Determine whether a matrix is diagonal matrix or not. Note that the diagonality is not limited to square matrix. The result is **cached**.
+```
+const A = new Matrix([
+  [1, 0, 0],
+  [0, 5, 0],
+  [0, 0, -3],
+]);
+
+const B = new Matrix([
+  [1, 0, 0.1],
+  [0, 5, 0],
+  [0, 0, -3],
+]);
+
+A.isDiagonal(); // true
+B.isDiagonal(); // false
+```
 
 #### isLowerTriangular(digit = 8)
+```
+@param { Number } digit - Number of significant digits
+@return { Boolean } - Returns true if the matrix is lower triangular
+```
+Determine whether a matrix is lower triangular matrix or not. Note that it can be applied to any non-square matrix. The result is **cached**.
+```
+const A = new Matrix([
+  [6, 0, 0, 0],
+  [1, -5, 0, 0],
+  [2, 30, 1, 0],
+]);
+
+A.isLowerTriangular(); // true
+```
 
 #### isOrthogonal(digit = 8)
+```
+@param { Number } digit - Number of significant digits
+@return { Boolean } - Returns true if the square matrix is orthogonal
+```
+Determine whether a square matrix is orthogonal or not. The result is **cached**.
+```
+const Reflection = new Matrix([
+  [1, 0],
+  [0, -1],
+]);
+
+Reflection.isOrthongonal(); // true
+```
 
 #### isSkewSymmetric(digit = 8)
+```
+@param { Number } digit - Number of significant digits
+@return { Boolean } - Returns true if the square matrix is skew symmetric
+```
+Determine whether a square matrix is skew symmetric or not. The result is **cached**.
+```
+const A = new Matrix([
+  [1, 2, 3, 4],
+  [-2, 2, -4, 5],
+  [-3, 4, 100, 10],
+  [-4, -5, -10, 5],
+]);
+
+A.isSkewSymmetric(); // true
+```
 
 #### isSquare()
+```
+@return { Boolean } - Returns true if the matrix is square
+```
+Determine whether a matrix is square or not. The result is **cached**.
+```
+const A = new Matrix([
+  [1, 2],
+  [3, 4],
+]);
+A.isSquare(); // true
+```
 
 #### isSymmetric(digit = 8)
+```
+@param { Number } digit - Number of significant digits
+@return { Boolean } - Returns true if the square matrix is symmetric
+```
+Determine whether a square matrix is symmetric or not. The result is **cached**.
+```
+const A = new Matrix([
+  [1, 4, 3],
+  [4, 5, 4],
+  [3, 4, 5],
+]);
+
+A.isSymmetric(); // true
+```
 
 #### isUpperTriangular(digit = 8)
+```
+@param { Number } digit - Number of significant digits
+@return { Boolean } - Returns true if the matrix is upper triangular
+```
+Determine whether a matrix is upper triangular matrix or not. Note that it can be applied to any non-square matrix. The result is **cached**.
+```
+const A = new Matrix([
+  [6, 0, 1, 5],
+  [0, -5, 4, 7],
+  [0, 0, 1, 2],
+]);
+
+A.isUpperTriangular(); // true
+```
 
 ### Utilities
 
 #### clone(A)
+```
+@param { Matrix } A - Any matrix
+@return { Matrix } - Returns a copy of A
+```
+Create a copy of matrix. Note that it resets the cached data.
+```
+const A = new Matrix([
+  [1, 2],
+  [3, 4],
+]);
+
+Matrix.clone(A); // [[1, 2], [3, 4]]
+```
 
 #### column(A, index)
+```
+@param { Matrix } A - Any matrix
+@param { Integer } index - Any valid column index
+@return { Matrix } - Returns column of A
+```
+```
+const A = new Matrix([
+  [1, 2],
+  [3, 4],
+  [5, 6],
+]);
+
+Matrix.column(A, 0); // [[1], [3], [5]]
+Matrix.column(A, 1); // [[2], [4], [6]]
+```
 
 #### diag(values)
+```
+@param { Array } values - Array of numbers or matrices
+@return { Array } - Returns a block diagonal matrix
+```
+Generate diagonal matrix if the argument is an array of numbers, generate block diagonal matrix if the argument is an array of matrices.
+```
+Matrix.diag([1, 2, 3]); // [[1, 0, 0], [0, 2, 0], [0, 0, 3]]
+
+const values = [
+  new Matrix([
+    [1, 2],
+    [3, 4],
+  ]),
+  new Matrix([
+    [5, 6],
+    [7, 8],
+  ])
+];
+
+Matrix.diag(values); // [[1, 2, 0, 0], [3, 4, 0, 0], [0, 0, 5, 6], [0, 0, 7, 8]]
+```
 
 #### elementwise(A, cb)
+```
+@param { Matrix } A - Any matrix
+@param { Function } cb - Callback function which applies on each entry of A
+@return { Matrix } - Returns a copy of new matrix
+```
+Apply a function over each entry of a matrix and return a new copy of the new matrix.
+```
+Matrix.elementwise(A, (entry) => entry * 2); // element-wise multiplication
+Matrix.elementwise(A, (entry) => entry ** 2); // element-wise power
+Matrix.elementwise(A, (entry) => entry - 10); // element-wise subtraction
+```
 
 #### entry(row, col)
+```
+@param { Integer } row - Any valid row index
+@param { Integer } col - Any valid column index
+@return { Number } - Returns entry of the matrix
+```
+Get the entry of a matrix.
+```
+const A = new Matrix([
+  [1, 2],
+  [3, 4],
+]);
+
+A.entry(0, 0); // 1
+A.entry(0, 1); // 2
+A.entry(1, 0); // 3
+A.entry(1, 1); // 4
+```
 
 #### generate(row, col, cb)
+```
+@param { Integer } row - Number of rows of matrix
+@param { Integer } col - Number of columns of matrix
+@param { Function } cb - Callback function which takes row and column as arguments and generate the corresponding entry
+```
+Generate a matrix which entries are the returned value of callback function.
+```
+Matrix.generate(3, 3, () => 0); // 3 x 3 zero matrix
+Matrix.generate(3, 3, (i, j) => 1 / (i + j + 1)); // 3 x 3 Hilbert matrix
+Matrix.generate(3, 3, (i, j) => i >= j ? 1 : 0); // 3 x 3 lower triangular matrix
+```
 
 #### getDiag(A)
+```
+@param { Matrix } A - Any matrix
+@return { Array } - Returns entries of A on the main diagonal
+```
+Get the entries on the main diagonal.
+```
+const A = new Matrix([
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+]);
+
+Matrix.getDiag(A); // [1, 6]
+```
 
 #### getRandomMatrix(row, col, min = 0, max = 1, toFixed = 0)
+```
+@param { Integer } row - Number of rows of a matrix
+@param { Integer } col - Number of columns of a matrix
+@param { Number } min - Lower bound of each entry
+@param { Number } max - Upper bound of each entry
+@param { Integer } toFixed - Number of decimal places
+@return { Matrix } - Returns random matrix
+```
+Generate a random matrix.
+```
+Matrix.getRandomMatrix(3, 4, -10, 10, 2); // 3 x 4 matrix which entries are bounded by -10 and 10 and has 2 decimal places
+```
 
 #### identity(size)
+```
+@param { Integer } size - The size of matrix
+@return { Matrix } - Returns identity matrix
+```
+Generate identity matrix with given size.
+```
+Matrix.identity(2); // 2 x 2 identity matrix
+Matrix.identity(10); // 10 x 10 identity matrix
+```
 
 #### isEqual(A, B, digit = 5)
+```
+@param { Matirx } A - Any Matrix
+@param { Matirx } B - Any Matrix
+@param { Integer } digit - Number of significant digits
+@return { Boolean } - Returns true if two matrices are considered as same
+```
+Determine whether two matrices are considered as equal.
+```
+const A = new Matrix([
+  [1, 2],
+  [3, 4],
+]);
+
+const B = new Matrix([
+  [1, 2],
+  [3, 4 + 10e-10],
+]);
+
+Matrix.isEqual(A, B); // true
+
+const C = new Matrix([
+  [1, 2],
+  [3, 4 + 10e-2],
+]);
+
+Matrix.isEqual(A, C); // false
+```
 
 #### row(A, index)
+```
+@param { Matrix } A - Any matrix
+@param { Integer } index - Any valid row index
+@return { Matrix } - Returns row of A
+```
+Get the row of a matrix with valid index.
+```
+const A = new Matrix([
+  [1, 2, 3],
+  [4, 5, 6],
+]);
+
+Matrix.row(A, 0); // [[1, 2, 3]]
+Matrix.row(A, 1); // [[4, 5, 6]]
+```
 
 #### submatrix(A, rowsExp, colsExp)
+```
+@param { Matrix } A - Any matrix
+@param { String | Number } rowsExp - Rows expression
+@param { String | Number } colsExp - Columns expression
+@return { Matrix } - Returns submatrix of A
+```
+Generate a submatrix of a matrix. Note that both rows and columns expression can be either string or nunmber.
+```
+const A = new Matrix([
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+]);
+
+Matrix.submatrix(A, 0, 1); // [[2]], row 0 & column 1
+Matrix.submatrix(A, '0:1', 1); [[1], [4]], row 0 + row 1 & column 1
+Matrix.submatrix(A, '0:1', '0:1'); [[1, 2], [4, 5]], row 0 + row 1 & column 0 + column 1
+Matrix.submatrix(A, ':', '1:2'); [[2, 3], [5, 6], [8,9]], all rows && column 1 + column 2
+Matrix.submatrix(A, ':', ':'); same with A
+```
 
 #### toString()
+```
+@return { Boolean } - Returns the stringified matrix
+```
+```
+const A = new Matrix([
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+]);
+
+A.toString(); // '1 2 3\n4 5 6\n7 8 9'
+// 1 2 3
+// 4 5 6
+// 7 8 9
+```
 
 #### zero(row, col)
+```
+@param { Integer } row - Number of rows of the matrix
+@param { Integer } col - Number of columns of the matrix
+@return { Matrix } - Returns zero matrix
+```
+Generate a zero matrix
+```
+Matrix.zero(3, 4); // 3 x 4 zero matrix
+Matrix.zero(10, 1); // 10 x 1 zero matrix
+```
 
 ## How to contribute
 You are welcome to contribute by:
