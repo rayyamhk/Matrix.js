@@ -129,7 +129,7 @@ new Matrix([
 @param { Boolean } optimized - Returns [P, LU] if it is true, [P, L, U] if it is false
 @return { Array } - Returns the LUP decomposition of matrix
 ```
-Find the LUP decomposition of a matrix, where L is lower triangular matrix which diagonal entries are always 1, U is upper triangular matrix, and P is permutation matrix.
+Find the LUP decomposition of a matrix, where L is lower triangular matrix which diagonal entries are always 1, U is upper triangular matrix, and P is permutation matrix. It is implemented using Gaussian Elimination with Partial Pivoting. The reason of using Partial Pivoting is to reduce the error caused by floating-point arithmetic. If you choose the optimized algorithm, both L and U are merged into one matrix in order to improve performance.
 ```
 const A = new Matrix([
   [4, 3],
@@ -143,13 +143,14 @@ const [P, LU] = Matrix.LU(A, true);
 // P is [ 1, 0 ], LU = [[6, 3], [2/3, 1]]
 // Note: P is an permutation array, L and U can be extracted from LU.
 ```
+[Table of Content](#API)
 
 #### QR(A)
 ```
 @param { Matrix } A - Any matrix
 @return { Array } - Returns [Q, R], which is the QR decomposition of A
 ```
-Find the QR decomposition of a matrix using Householder Transform, where Q is orthogonal matrix, R is upper triangular matrix.
+Find the QR decomposition of a matrix, where Q is orthogonal matrix, R is upper triangular matrix. The algorithm is implemented using Householder Transform instead of Gram–Schmidt process because the Householder Transform is more numerically stable.
 ```
 const A = new Matrix([
   [12, -51, 4],
@@ -162,6 +163,7 @@ const [Q, R] = Matrix.QR(A);
 // R is [[-14, -21, 14], [0, -175, 70], [0, 0, -35]],
 // and A = QR
 ```
+[Table of Content](#API)
 
 ### Linear-Equations
 
@@ -171,7 +173,7 @@ const [Q, R] = Matrix.QR(A);
 @param { Matrix } y - n x 1 matrix
 @return { Matrix } - Returns n x 1 matrix which is the solution of Ux = y
 ```
-Solve system of linear equations Ux = y, where U is an upper triangular matrix. If there is no unique solutions, an error is thrown.
+Solve system of linear equations Ux = y using backward substitution, where U is an upper triangular matrix. If there is no unique solutions, an error is thrown.
 ```
 const A = new Matrix([
   [1, 2],
@@ -189,6 +191,7 @@ try {
   console.log(e.message);
 }
 ```
+[Table of Content](#API)
 
 #### forward(L, y)
 ```
@@ -196,7 +199,7 @@ try {
 @param { Matrix } y - n x 1 matrix
 @return { Matrix } - Returns n x 1 matrix which is the solution of Lx = y
 ```
-Solve system of linear equations Lx = y, where L is a lower triangular matrix. If there is no unique solutions, an error is thrown.
+Solve system of linear equations Lx = y using forward substitution, where L is a lower triangular matrix. If there is no unique solutions, an error is thrown.
 ```
 const A = new Matrix([
   [1, 0],
@@ -214,6 +217,7 @@ try {
   console.log(e.message);
 }
 ```
+[Table of Content](#API)
 
 #### solve(A, y)
 ```
@@ -221,7 +225,7 @@ try {
 @param { Matrix } y - n x 1 matrix
 @return { Matrix } - Returns n x 1 matrix which is the solution of Ax = y
 ```
-Solve system of linear equations Ax = y with LU decomposition. If there is no unique solutions, an error is thrown.
+Solve system of linear equations Ax = y using LU decomposition. If there is no unique solutions, an error is thrown.
 ```
 const A = new Matrix([
   [1, 2],
@@ -239,6 +243,7 @@ try {
   console.log(e.message);
 }
 ```
+[Table of Content](#API)
 
 ### Operations
 
@@ -248,7 +253,6 @@ try {
 @param { Matrix } B - Any matrix that has same size with A
 @return { Matrix } - Returns sum of two matrices
 ```
-Find the sum of two matrices.
 ```
 const A = new Matrix([
   [1, 2],
@@ -262,6 +266,7 @@ const B = new Matrix([
 
 const Sum = Matrix.add(A, B); // [[6, 8], [10, 12]]
 ```
+[Table of Content](#API)
 
 #### inverse(A)
 ```
@@ -281,6 +286,7 @@ try {
   console.log(e.message);
 }
 ```
+[Table of Content](#API)
 
 #### multiply(A, B)
 ```
@@ -288,7 +294,6 @@ try {
 @param { Matrix } B - Any matrix that is size-compatible with A
 @return { Matrix } - Returns the product of two matrices
 ```
-Find the product of two matrices.
 ```
 const A = new Matrix([
   [1, 2, 3],
@@ -303,6 +308,7 @@ const B = new Matrix([
 
 const Product = Matrix.multiply(A, B); // [[-10, -12], [-19, -24]]
 ```
+[Table of Content](#API)
 
 #### pow(A, n)
 ```
@@ -310,7 +316,7 @@ const Product = Matrix.multiply(A, B); // [[-10, -12], [-19, -24]]
 @param { Number } exponent - Any Non-negative integer
 @return { Matrix } - Returns the power of A
 ```
-Find the power of any square matrix using recrusive algorithm.
+The algorithm is implemented recursively.
 ```
 const A = new Matrix([
   [2, 0],
@@ -319,6 +325,7 @@ const A = new Matrix([
 
 const Result = Matrix.pow(A, 10); // [[1024, 0], [0, 1024]]
 ```
+[Table of Content](#API)
 
 #### subtract(A, B)
 ```
@@ -326,7 +333,6 @@ const Result = Matrix.pow(A, 10); // [[1024, 0], [0, 1024]]
 @param { Matrix } B - Any matrix that has same size with A
 @return { Matrix } - Returns difference of two matrices
 ```
-Find the difference of two matrices.
 ```
 const A = new Matrix([
   [1, 2],
@@ -340,13 +346,13 @@ const B = new Matrix([
 
 const Diff = Matrix.subtract(A, B); // [[-3, -1], [1, 3]]
 ```
+[Table of Content](#API)
 
 #### transpose(A)
 ```
 @param { Matrix } A - Any matrix
 @return { Matrix } - Returns transpose of A
 ```
-Find the transpose of a matrix.
 ```
 const A = new Matrix([
   [1, 2, 3],
@@ -355,6 +361,7 @@ const A = new Matrix([
 
 const T = Matrix.transpose(A); // [[1, 4], [2, 5], [3, 6]]
 ```
+[Table of Content](#API)
 
 ### Properties
 
@@ -376,6 +383,7 @@ A.cond(2); // 32.844126527227147
 A.cond(Infinity); // 42.4999,
 A.cond('F'); // 34.117851306578174
 ```
+[Table of Content](#API)
 
 #### det()
 ```
@@ -392,12 +400,13 @@ const A = new Matrix([
 
 A.det(); // -376
 ```
+[Table of Content](#API)
 
 #### eigenvalues()
 ```
 @return { Array } - Returns array of eigenvalues
 ```
-Find the eigenvalues of any square matrix using QR Algorithm. The eigenvalues can be either real number or complex number. Note that all eigenvalues are instance of **Complex**, for more details please visit [Complex.js](https://github.com/rayyamhk/Complex.js). The eigenvalues are **cached**.
+Find the eigenvalues of any square matrix using QR Algorithm with single shift. The eigenvalues can be either real number or complex number. Note that all eigenvalues are instance of **Complex**, for more details please visit [Complex.js](https://github.com/rayyamhk/Complex.js). The eigenvalues are **cached**.
 ```
 const A = new Matrix([
   [13, -12, 6, -9],
@@ -413,6 +422,7 @@ eigenvalues.forEach((eigenvalue) => {
 
 // Result: '10.7046681565572', '-12.9152701010176', '15.1053009722302 + 14.3131819845827i', '15.1053009722302 - 14.3131819845827i'
 ```
+[Table of Content](#API)
 
 #### norm(p)
 ```
@@ -420,6 +430,10 @@ eigenvalues.forEach((eigenvalue) => {
 @return { Number } - Returns p-norm of the matrix.
 ```
 Find the matrix norm of any matrix with respect to the choice of norm. The norms are **not cached**.
+1-norm: maximum absolute column sum of the matrix
+2-norm: the largest singular value of matrix
+Infinity-norm: maximum absolute row sum of the matrix
+Frobenius norm: Euclidean norm invloving all entries
 ```
 const A = new Matrix([
   [1, 7, -5, 2, -7],
@@ -431,12 +445,13 @@ A.norm(2); // 15.849881886952135
 A.norm(Infinity); // 27
 A.norm('F'); // 21.447610589527216
 ```
+[Table of Content](#API)
 
 #### nullity()
 ```
 @return { Number } - Returns the nullity of the matrix
 ```
-Find the nullity of any matrix. The nullity is **cached**.
+Find the nullity of any matrix, which is the dimension of the nullspace. The nullity is **cached**.
 ```
 const A = new Matrix([
   [0, 1, 2],
@@ -446,11 +461,13 @@ const A = new Matrix([
 
 A.nullity(); // 1
 ```
+[Table of Content](#API)
+
 #### rank()
 ```
 @return { Number } - Returns the rank of the matrix
 ```
-Find the rank of any matrix. The rank is **cached**.
+Find the rank of any matrix, which is the dimension of the row space. The rank is **cached**.
 ```
 const A = new Matrix([
   [0, 1, 2],
@@ -460,6 +477,7 @@ const A = new Matrix([
 
 A.rank(); // 2
 ```
+[Table of Content](#API)
 
 #### size()
 ```
@@ -474,11 +492,13 @@ const A = new Matrix([
 
 const [row, col] = A.size(); // 2, 4
 ```
+[Table of Content](#API)
+
 #### trace()
 ```
 @return { Number } - Returns the trace of the square matrix.
 ```
-Find the trace of any square matrix. The trace is **cached**.
+Find the trace of any square matrix, which is the sum of all entries on the main diagonal. The trace is **cached**.
 ```
 const A = new Matrix([
   [1, 2, 3],
@@ -488,6 +508,7 @@ const A = new Matrix([
 
 A.trace(); // 15
 ```
+[Table of Content](#API)
 
 ### Structure
 
@@ -496,7 +517,7 @@ A.trace(); // 15
 @param { Number } digit - Number of significant digits
 @return { Boolean } - Returns true if the matrix is diagonal matrix
 ```
-Determine whether a matrix is diagonal matrix or not. Note that the diagonality is not limited to square matrix. The result is **cached**.
+Diagonal matrix is a matrix in which the entries outside the main diagonal are all zero. Note that the term diagonal refers to **rectangular diagonal**. The result is **cached**.
 ```
 const A = new Matrix([
   [1, 0, 0],
@@ -513,13 +534,14 @@ const B = new Matrix([
 A.isDiagonal(); // true
 B.isDiagonal(); // false
 ```
+[Table of Content](#API)
 
 #### isLowerTriangular(digit = 8)
 ```
 @param { Number } digit - Number of significant digits
 @return { Boolean } - Returns true if the matrix is lower triangular
 ```
-Determine whether a matrix is lower triangular matrix or not. Note that it can be applied to any non-square matrix. The result is **cached**.
+Lower triangular matrix is a matrix in which all the entries above the main diagonal are zero. Note that it can be applied to any non-square matrix. The result is **cached**.
 ```
 const A = new Matrix([
   [6, 0, 0, 0],
@@ -529,13 +551,14 @@ const A = new Matrix([
 
 A.isLowerTriangular(); // true
 ```
+[Table of Content](#API)
 
 #### isOrthogonal(digit = 8)
 ```
 @param { Number } digit - Number of significant digits
 @return { Boolean } - Returns true if the square matrix is orthogonal
 ```
-Determine whether a square matrix is orthogonal or not. The result is **cached**.
+Orthogonal matrix is a matrix in which all rows and columns are orthonormal vectors. The result is **cached**.
 ```
 const Reflection = new Matrix([
   [1, 0],
@@ -544,13 +567,14 @@ const Reflection = new Matrix([
 
 Reflection.isOrthongonal(); // true
 ```
+[Table of Content](#API)
 
 #### isSkewSymmetric(digit = 8)
 ```
 @param { Number } digit - Number of significant digits
 @return { Boolean } - Returns true if the square matrix is skew symmetric
 ```
-Determine whether a square matrix is skew symmetric or not. The result is **cached**.
+Skew symmetric matrix is a square matrix whose transpose equals its negative. The result is **cached**.
 ```
 const A = new Matrix([
   [1, 2, 3, 4],
@@ -561,12 +585,13 @@ const A = new Matrix([
 
 A.isSkewSymmetric(); // true
 ```
+[Table of Content](#API)
 
 #### isSquare()
 ```
 @return { Boolean } - Returns true if the matrix is square
 ```
-Determine whether a matrix is square or not. The result is **cached**.
+Square matrix is a matrix with same number of rows and columns. The result is **cached**.
 ```
 const A = new Matrix([
   [1, 2],
@@ -574,13 +599,14 @@ const A = new Matrix([
 ]);
 A.isSquare(); // true
 ```
+[Table of Content](#API)
 
 #### isSymmetric(digit = 8)
 ```
 @param { Number } digit - Number of significant digits
 @return { Boolean } - Returns true if the square matrix is symmetric
 ```
-Determine whether a square matrix is symmetric or not. The result is **cached**.
+symmetric matrix is a square matrix that is equal to its transpose. The result is **cached**.
 ```
 const A = new Matrix([
   [1, 4, 3],
@@ -590,13 +616,14 @@ const A = new Matrix([
 
 A.isSymmetric(); // true
 ```
+[Table of Content](#API)
 
 #### isUpperTriangular(digit = 8)
 ```
 @param { Number } digit - Number of significant digits
 @return { Boolean } - Returns true if the matrix is upper triangular
 ```
-Determine whether a matrix is upper triangular matrix or not. Note that it can be applied to any non-square matrix. The result is **cached**.
+Upper triangular matrix is a matrix in which all the entries below the main diagonal are zero. Note that it can be applied to any non-square matrix. The result is **cached**
 ```
 const A = new Matrix([
   [6, 0, 1, 5],
@@ -606,6 +633,7 @@ const A = new Matrix([
 
 A.isUpperTriangular(); // true
 ```
+[Table of Content](#API)
 
 ### Utilities
 
@@ -623,6 +651,7 @@ const A = new Matrix([
 
 Matrix.clone(A); // [[1, 2], [3, 4]]
 ```
+[Table of Content](#API)
 
 #### column(A, index)
 ```
@@ -640,6 +669,7 @@ const A = new Matrix([
 Matrix.column(A, 0); // [[1], [3], [5]]
 Matrix.column(A, 1); // [[2], [4], [6]]
 ```
+[Table of Content](#API)
 
 #### diag(values)
 ```
@@ -663,6 +693,7 @@ const values = [
 
 Matrix.diag(values); // [[1, 2, 0, 0], [3, 4, 0, 0], [0, 0, 5, 6], [0, 0, 7, 8]]
 ```
+[Table of Content](#API)
 
 #### elementwise(A, cb)
 ```
@@ -676,6 +707,7 @@ Matrix.elementwise(A, (entry) => entry * 2); // element-wise multiplication
 Matrix.elementwise(A, (entry) => entry ** 2); // element-wise power
 Matrix.elementwise(A, (entry) => entry - 10); // element-wise subtraction
 ```
+[Table of Content](#API)
 
 #### entry(row, col)
 ```
@@ -683,7 +715,6 @@ Matrix.elementwise(A, (entry) => entry - 10); // element-wise subtraction
 @param { Integer } col - Any valid column index
 @return { Number } - Returns entry of the matrix
 ```
-Get the entry of a matrix.
 ```
 const A = new Matrix([
   [1, 2],
@@ -695,6 +726,7 @@ A.entry(0, 1); // 2
 A.entry(1, 0); // 3
 A.entry(1, 1); // 4
 ```
+[Table of Content](#API)
 
 #### generate(row, col, cb)
 ```
@@ -708,13 +740,13 @@ Matrix.generate(3, 3, () => 0); // 3 x 3 zero matrix
 Matrix.generate(3, 3, (i, j) => 1 / (i + j + 1)); // 3 x 3 Hilbert matrix
 Matrix.generate(3, 3, (i, j) => i >= j ? 1 : 0); // 3 x 3 lower triangular matrix
 ```
+[Table of Content](#API)
 
 #### getDiag(A)
 ```
 @param { Matrix } A - Any matrix
 @return { Array } - Returns entries of A on the main diagonal
 ```
-Get the entries on the main diagonal.
 ```
 const A = new Matrix([
   [1, 2, 3, 4],
@@ -723,6 +755,7 @@ const A = new Matrix([
 
 Matrix.getDiag(A); // [1, 6]
 ```
+[Table of Content](#API)
 
 #### getRandomMatrix(row, col, min = 0, max = 1, toFixed = 0)
 ```
@@ -733,10 +766,10 @@ Matrix.getDiag(A); // [1, 6]
 @param { Integer } toFixed - Number of decimal places
 @return { Matrix } - Returns random matrix
 ```
-Generate a random matrix.
 ```
 Matrix.getRandomMatrix(3, 4, -10, 10, 2); // 3 x 4 matrix which entries are bounded by -10 and 10 and has 2 decimal places
 ```
+[Table of Content](#API)
 
 #### identity(size)
 ```
@@ -748,6 +781,7 @@ Generate identity matrix with given size.
 Matrix.identity(2); // 2 x 2 identity matrix
 Matrix.identity(10); // 10 x 10 identity matrix
 ```
+[Table of Content](#API)
 
 #### isEqual(A, B, digit = 5)
 ```
@@ -777,6 +811,7 @@ const C = new Matrix([
 
 Matrix.isEqual(A, C); // false
 ```
+[Table of Content](#API)
 
 #### row(A, index)
 ```
@@ -784,7 +819,6 @@ Matrix.isEqual(A, C); // false
 @param { Integer } index - Any valid row index
 @return { Matrix } - Returns row of A
 ```
-Get the row of a matrix with valid index.
 ```
 const A = new Matrix([
   [1, 2, 3],
@@ -794,6 +828,7 @@ const A = new Matrix([
 Matrix.row(A, 0); // [[1, 2, 3]]
 Matrix.row(A, 1); // [[4, 5, 6]]
 ```
+[Table of Content](#API)
 
 #### submatrix(A, rowsExp, colsExp)
 ```
@@ -816,6 +851,7 @@ Matrix.submatrix(A, '0:1', '0:1'); [[1, 2], [4, 5]], row 0 + row 1 & column 0 + 
 Matrix.submatrix(A, ':', '1:2'); [[2, 3], [5, 6], [8,9]], all rows && column 1 + column 2
 Matrix.submatrix(A, ':', ':'); same with A
 ```
+[Table of Content](#API)
 
 #### toString()
 ```
@@ -833,6 +869,7 @@ A.toString(); // '1 2 3\n4 5 6\n7 8 9'
 // 4 5 6
 // 7 8 9
 ```
+[Table of Content](#API)
 
 #### zero(row, col)
 ```
@@ -845,6 +882,7 @@ Generate a zero matrix
 Matrix.zero(3, 4); // 3 x 4 zero matrix
 Matrix.zero(10, 1); // 10 x 1 zero matrix
 ```
+[Table of Content](#API)
 
 ## How to contribute
 You are welcome to contribute by:
@@ -860,3 +898,5 @@ Copyright (C) 2020 Ray Yam
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
