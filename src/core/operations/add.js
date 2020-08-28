@@ -4,7 +4,7 @@ const { INVALID_MATRIX, SIZE_INCOMPATIBLE } = require('../../Error');
  * Find the sum of two matrices.
  * @param { Matrix } A - Any matrix
  * @param { Matrix } B - Any matrix that has same size with A
- * @return { Matrix } - Sum of two matrices
+ * @return { Matrix } - Returns sum of two matrices
  */
 
 module.exports = function add(A, B) {

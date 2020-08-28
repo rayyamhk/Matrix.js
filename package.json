@@ -53,6 +53,6 @@
     "jest": "^26.1.0"
   },
   "dependencies": {
-    "@rayyamhk/complex": "^1.0.4"
+    "@rayyamhk/complex": "^1.0.7"
   }
 }

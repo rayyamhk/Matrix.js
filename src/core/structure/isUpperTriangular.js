@@ -1,5 +1,6 @@
 /**
  * Determine whether a matrix is upper triangular matrix or not.
+ * Note that it can be applied to any non-square matrix.
  * The result is cached.
  * @param { Number } digit - Number of significant digits
  * @return { Boolean } - Returns true if the matrix is upper triangular
