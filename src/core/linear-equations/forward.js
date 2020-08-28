@@ -9,7 +9,7 @@ const {
 
 /**
  * Solve system of linear equations Lx = y,
- * where L is an lower triangular matrix.
+ * where L is a lower triangular matrix.
  * If there is no unique solutions, an error is thrown.
  * @param { Matrix } L - n x n lower triangular matrix
  * @param { Matrix } y - n x 1 matrix

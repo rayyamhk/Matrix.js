@@ -5,7 +5,7 @@ const { INVALID_MATRIX } = require('./Error');
  * Returns an instance of Matrix
  * @param { Array } A - Two dimensional array
  * where A[i][j] represents the i-th row and j-th column of a matrix
- * @return { Matrix } - Instance of Matrix
+ * @return { Matrix } - Returns instance of Matrix
  */
 
 function Matrix(A) {

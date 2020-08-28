@@ -5,7 +5,7 @@ const { INVALID_ARRAY, EXPECTED_ARRAY_OF_NUMBERS_OR_MATRICES, INVALID_SQUARE_MAT
 /**
  * Generate diagonal matrix if the argument is an array of numbers,
  * generate block diagonal matrix if the argument is an array of matrices.
- * @param { Array } A - Array of numbers or matrices
+ * @param { Array } values - Array of numbers or matrices
  * @return { Array } - Returns a block diagonal matrix
  */
 
