@@ -5,6 +5,7 @@ A professional, comprehensive and high-performance library for you to manipulate
 - Professional
 - Comprehensive
 - High-performance
+- Matrix properties are cached
 - Easy to use
 - 3000+ Test cases
 
@@ -118,6 +119,7 @@ new Matrix([
   [7, 8, 9],
 ]); // 3x3 matrix
 ```
+[Table of Content](#API)
 
 ### Decompositions
 
