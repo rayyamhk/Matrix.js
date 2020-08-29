@@ -1,6 +1,6 @@
 {
   "name": "@rayyamhk/matrix",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Ray Yam",
   "contributors": [
     "Ray Yam"
@@ -16,10 +16,13 @@
     "Linear Algebra",
     "Linear Equations",
     "Eigenvalues",
+    "Condition Number",
+    "Norm",
     "Inverse",
     "Determinant",
-    "LU decomposition",
-    "QR decomposition"
+    "Decomposition",
+    "LU",
+    "QR"
   ],
   "homepage": "https://github.com/rayyamhk/Matrix.js",
   "bugs": {
