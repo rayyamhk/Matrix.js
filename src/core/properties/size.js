@@ -1,10 +1,13 @@
 /**
- * Find the size of any matrix, which is in the form of [row, column].
- * The size is cached.
- * @return { Array } - Returns the number of rows and columns of a matrix.
+ * Calculates the size of any Matrix,
+ * which is in the form of [row, column].<br><br>
+ * 
+ * The size of Matrix is cached.
+ * @memberof Matrix
+ * @instance
+ * @returns {number[]} The number of rows and columns of a Matrix
  */
-
-module.exports = function size() {
+function size() {
   if (this._size !== undefined) {
     return this._size;
   }
@@ -19,3 +22,5 @@ module.exports = function size() {
   this._size = [A.length, A[0].length];
   return this._size;
 };
+
+module.exports = size;

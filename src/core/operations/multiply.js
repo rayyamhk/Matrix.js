@@ -2,13 +2,14 @@ const empty = require('../../util/empty');
 const { INVALID_MATRIX, SIZE_INCOMPATIBLE } = require('../../Error');
 
 /**
- * Find the product of two matrices.
- * @param { Matrix } A - Any matrix
- * @param { Matrix } B - Any matrix that is size-compatible with A
- * @return { Matrix } - Returns the product of two matrices
+ * Calculates the product of two Matrices.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any Matrix
+ * @param {Matrix} B - Any Matrix that is size-compatible with A
+ * @returns {Matrix} The product of two Matrices
  */
-
-module.exports = function multiply(A, B) {
+function multiply(A, B) {
   if (!(A instanceof this) || !(B instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -36,3 +37,5 @@ module.exports = function multiply(A, B) {
 
   return new this(result);
 };
+
+module.exports = multiply;

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>core/properties/norm.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Matrix.html">Matrix</a><ul class='methods'><li data-type='method'><a href="Matrix.html#.LU">LU</a></li><li data-type='method'><a href="Matrix.html#.QR">QR</a></li><li data-type='method'><a href="Matrix.html#.backward">backward</a></li><li data-type='method'><a href="Matrix.html#.forward">forward</a></li><li data-type='method'><a href="Matrix.html#.solve">solve</a></li><li data-type='method'><a href="Matrix.html#.add">add</a></li><li data-type='method'><a href="Matrix.html#.inverse">inverse</a></li><li data-type='method'><a href="Matrix.html#.multiply">multiply</a></li><li data-type='method'><a href="Matrix.html#.pow">pow</a></li><li data-type='method'><a href="Matrix.html#.transpose">transpose</a></li><li data-type='method'><a href="Matrix.html#cond">cond</a></li><li data-type='method'><a href="Matrix.html#det">det</a></li><li data-type='method'><a href="Matrix.html#eigenvalues">eigenvalues</a></li><li data-type='method'><a href="Matrix.html#norm">norm</a></li><li data-type='method'><a href="Matrix.html#nullity">nullity</a></li><li data-type='method'><a href="Matrix.html#rank">rank</a></li><li data-type='method'><a href="Matrix.html#size">size</a></li><li data-type='method'><a href="Matrix.html#trace">trace</a></li><li data-type='method'><a href="Matrix.html#isDiagonal">isDiagonal</a></li><li data-type='method'><a href="Matrix.html#isLowerTriangular">isLowerTriangular</a></li><li data-type='method'><a href="Matrix.html#isOrthogonal">isOrthogonal</a></li><li data-type='method'><a href="Matrix.html#isSkewSymmetric">isSkewSymmetric</a></li><li data-type='method'><a href="Matrix.html#isSquare">isSquare</a></li><li data-type='method'><a href="Matrix.html#isSymmetric">isSymmetric</a></li><li data-type='method'><a href="Matrix.html#isUpperTriangular">isUpperTriangular</a></li><li data-type='method'><a href="Matrix.html#.clone">clone</a></li><li data-type='method'><a href="Matrix.html#.column">column</a></li><li data-type='method'><a href="Matrix.html#.diag">diag</a></li><li data-type='method'><a href="Matrix.html#.elementwise">elementwise</a></li><li data-type='method'><a href="Matrix.html#entry">entry</a></li><li data-type='method'><a href="Matrix.html#.generate">generate</a></li><li data-type='method'><a href="Matrix.html#.getDiag">getDiag</a></li><li data-type='method'><a href="Matrix.html#.getRandomMatrix">getRandomMatrix</a></li><li data-type='method'><a href="Matrix.html#.identity">identity</a></li><li data-type='method'><a href="Matrix.html#.isEqual">isEqual</a></li><li data-type='method'><a href="Matrix.html#.row">row</a></li><li data-type='method'><a href="Matrix.html#.submatrix">submatrix</a></li><li data-type='method'><a href="Matrix.html#toString">toString</a></li><li data-type='method'><a href="Matrix.html#.zero">zero</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">core/properties/norm.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Matrix = require('../..');
+const { INVALID_P_NORM } = require('../../Error');
+
+/**
+ * Calculates the Matrix norm of any Matrix with respect to the choice of norm.&lt;br>&lt;br>
+ * 
+ * 1-norm: Maximum absolute column sum of the Matrix.&lt;br>
+ * 2-norm: The largest singular value of Matrix.&lt;br>
+ * Infinity-norm: Maximum absolute row sum of the Matrix.&lt;br>
+ * Frobenius-norm: Euclidean norm invloving all entries.&lt;br>&lt;br>
+ * 
+ * The norms are not cached.
+ * @memberof Matrix
+ * @instance
+ * @param {(1|2|Infinity|'F')} p - The choice of Matrix norm
+ * @returns {number} The norm of the Matrix.
+ */
+function norm(p = 2) {
+  const [row, col] = this.size();
+
+  if (p !== 1 &amp;&amp; p !== 2 &amp;&amp; p !== Infinity &amp;&amp; p !== 'F') {
+    throw new Error(INVALID_P_NORM);
+  }
+
+  const matrix = this._matrix;
+  let result = 0;
+
+  if (p === 1) {
+    // max of column sum
+    for (let j = 0; j &lt; col; j++) {
+      let columnSum = 0;
+      for (let i = 0; i &lt; row; i++) {
+        columnSum += Math.abs(matrix[i][j]);
+      }
+      if (columnSum > result) {
+        result = columnSum;
+      }
+    }
+    return result;
+  }
+
+  // largest singular value
+  if (p === 2) {
+    const transpose = Matrix.transpose(this);
+    const M = Matrix.multiply(transpose, this);
+    const eigenvalues = M.eigenvalues();
+
+    for (let i = 0; i &lt; eigenvalues.length; i++) {
+      const value = eigenvalues[i].getModulus();
+      if (value > result) {
+        result = value;
+      }
+    }
+    return Math.sqrt(result);
+  }
+
+  if (p === Infinity) {
+    // max of row sum
+    for (let i = 0; i &lt; row; i++) {
+      let rowSum = 0;
+      for (let j = 0; j &lt; col; j++) {
+        rowSum += Math.abs(matrix[i][j]);
+      }
+      if (rowSum > result) {
+        result = rowSum;
+      }
+    }
+    return result;
+  }
+
+  // F
+  for (let i = 0; i &lt; row; i++) {
+    for (let j = 0; j &lt; col; j++) {
+      result += matrix[i][j] ** 2;
+    }
+  }
+  return Math.sqrt(result);
+};
+
+module.exports = norm;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Sat Aug 29 2020 23:56:23 GMT+0800 (GMT+08:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+</body>
+</html>

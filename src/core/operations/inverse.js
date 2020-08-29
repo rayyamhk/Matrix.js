@@ -3,11 +3,13 @@ const Matrix = require('../..');
 
 /**
  * Find the inverse of non-singular matrix using Elementary Row Operations.
- * @param { Matrix } A - Any non-singular matrix
- * @return { Matrix } - Returns the inverse of A
+ * If the matrix is singular, an error is thrown.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any square Matrix
+ * @returns {Matrix} The inverse of A
  */
-
-module.exports = function inverseerrse(A) {
+function inverse(A) {
   if (!(A instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -94,3 +96,5 @@ function initPermutation(size) {
   }
   return permutation;
 }
+
+module.exports = inverse;

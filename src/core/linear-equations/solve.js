@@ -6,14 +6,15 @@ const {
 } = require('../../Error');
 
 /**
- * Solve system of linear equations Ax = y with LU decomposition.
+ * Solve system of linear equations Ax = y using LU decomposition.
  * If there is no unique solutions, an error is thrown.
- * @param { Matrix } A - Any n x n square matrix
- * @param { Matrix } y - n x 1 matrix
- * @return { Matrix } - Returns n x 1 matrix which is the solution of Ax = y
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} L - Any n x n square Matrix
+ * @param {Matrix} y - Any n x 1 Matrix
+ * @returns {Matrix} n x 1 Matrix which is the solution of Ax = y
  */
-
-module.exports = function solve(A, b) {
+function solve(A, b) {
   if (!(A instanceof this) || !(b instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -70,3 +71,5 @@ module.exports = function solve(A, b) {
   }
   return new this(coefficients);
 };
+
+module.exports = solve;

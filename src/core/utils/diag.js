@@ -3,13 +3,14 @@ const isNumber = require('../../util/isNumber');
 const { INVALID_ARRAY, EXPECTED_ARRAY_OF_NUMBERS_OR_MATRICES, INVALID_SQUARE_MATRIX } = require('../../Error');
 
 /**
- * Generate diagonal matrix if the argument is an array of numbers,
- * generate block diagonal matrix if the argument is an array of matrices.
- * @param { Array } values - Array of numbers or matrices
- * @return { Array } - Returns a block diagonal matrix
+ * Generates diagonal Matrix if the argument is an array of numbers,
+ * generates block diagonal Matrix if the argument is an array of Matrices.
+ * @memberof Matrix
+ * @static
+ * @param {(number[]|Matrix[])} values - Array of numbers or Matrices
+ * @returns {Matrix} Block diagonal Matrix
  */
-
-module.exports = function diag(values) {
+function diag(values) {
   if (!Array.isArray(values)) {
     throw new Error(INVALID_ARRAY);
   }
@@ -87,3 +88,5 @@ module.exports = function diag(values) {
     return 0;
   });
 };
+
+module.exports = diag;

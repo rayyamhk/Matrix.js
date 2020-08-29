@@ -1,0 +1,27 @@
+{
+  "plugins": [],
+  "recurseDepth": 10,
+  "source": {
+    "include": "./src",
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "tests"
+  },
+  "sourceType": "module",
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc","closure"]
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  },
+  "opts": {
+    "recurse": true,
+    "destination": "./docs",
+    "template": "./docs/docdash"
+  },
+  "docdash": {
+    "sort": false,
+    "search": true
+  }
+}

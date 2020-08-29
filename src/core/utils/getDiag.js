@@ -1,12 +1,13 @@
 const { INVALID_MATRIX } = require('../../Error');
 
 /**
- * Get the entries on the main diagonal.
- * @param { Matrix } A - Any matrix
- * @return { Array } - Returns entries of A on the main diagonal
+ * Gets the entries on the main diagonal.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any Matrix
+ * @returns {number[]} Array of entries of A on the main diagonal
  */
-
-module.exports = function getDiag(A) {
+function getDiag(A) {
   if (!(A instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -23,3 +24,5 @@ module.exports = function getDiag(A) {
 
   return diags;
 };
+
+module.exports =  getDiag;

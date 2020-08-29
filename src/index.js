@@ -2,12 +2,12 @@ const isMatrix = require('./util/isMatrix');
 const { INVALID_MATRIX } = require('./Error');
 
 /**
- * Returns an instance of Matrix
- * @param { Array } A - Two dimensional array
- * where A[i][j] represents the i-th row and j-th column of a matrix
- * @return { Matrix } - Returns instance of Matrix
+ * Creates a new Matrix
+ * @namespace Matrix
+ * @class
+ * @param {number[][]} A - Two dimensional array where
+ * A[i][j] represents the i-th row and j-th column of a matrix
  */
-
 function Matrix(A) {
   if (!isMatrix(A)) {
     throw new Error(INVALID_MATRIX);

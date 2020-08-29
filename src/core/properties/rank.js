@@ -1,12 +1,15 @@
 const Matrix = require('../..');
 
 /**
- * Find the rank of any matrix.
+ * Calculates the rank of any Matrix,
+ * which is the dimension of the row space.<br><br>
+ * 
  * The rank is cached.
- * @return { Number } - Returns the rank of the matrix
+ * @memberof Matrix
+ * @instance
+ * @returns {number} The rank of the Matrix
  */
-
-module.exports = function rank() {
+function rank() {
   if (this._rank !== undefined) {
     return this._rank;
   }
@@ -35,3 +38,5 @@ module.exports = function rank() {
   this._rank = rk;
   return rk;
 };
+
+module.exports = rank;

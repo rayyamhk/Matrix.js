@@ -1,13 +1,14 @@
 const { INVALID_MATRIX, SIZE_INCOMPATIBLE } = require('../../Error');
 
 /**
- * Find the sum of two matrices.
- * @param { Matrix } A - Any matrix
- * @param { Matrix } B - Any matrix that has same size with A
- * @return { Matrix } - Returns sum of two matrices
+ * Calculates the sum of two Matrices.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any Matrix
+ * @param {Matrix} B - Any Matrix that has same size with A
+ * @returns {Matrix} The sum of two Matrices
  */
-
-module.exports = function add(A, B) {
+function add(A, B) {
   if (!(A instanceof this) || !(B instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -24,3 +25,5 @@ module.exports = function add(A, B) {
 
   return this.generate(row, col, (i, j) => matrix1[i][j] + matrix2[i][j]);
 };
+
+module.exports = add;

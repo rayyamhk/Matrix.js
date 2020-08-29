@@ -1,9 +1,10 @@
 /**
- * Get the stringified matrix
- * @return { Boolean } - Returns the stringified matrix
+ * Gets the stringified Matrix
+ * @memberof Matrix
+ * @instance
+ * @returns {string} Stringified Matrix
  */
-
-module.exports = function toString() {
+function toString() {
   const matrix = this._matrix;
   const [row, col] = this.size();
 
@@ -21,3 +22,5 @@ module.exports = function toString() {
   }
   return str;
 };
+
+module.exports = toString;

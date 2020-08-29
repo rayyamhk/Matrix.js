@@ -1,13 +1,15 @@
 const { INVALID_MATRIX, INVALID_SQUARE_MATRIX, INVALID_EXPONENT } = require('../../Error');
 
 /**
- * Find the power of any square matrix.
- * @param { Matrix } A - Any square matrix
- * @param { Number } exponent - Any Non-negative integer
- * @return { Matrix } - Returns the power of A
+ * Calculates the power of any square matrix.
+ * The algorithm is implemented recursively.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any square Matrix
+ * @param {number} exponent - Any Non-negative integer
+ * @returns {Matrix} The power of A
  */
-
-module.exports = function pow(A, exponent) {
+function pow(A, exponent) {
   if (!(A instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -35,3 +37,5 @@ module.exports = function pow(A, exponent) {
   const temp = this.pow(A, (exponent - 1) / 2);
   return this.multiply(this.multiply(temp, temp), A);
 };
+
+module.exports = pow;

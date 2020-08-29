@@ -1,12 +1,16 @@
 /**
- * Determine whether a matrix is upper triangular matrix or not.
- * Note that it can be applied to any non-square matrix.
+ * Determines whether a Matrix is upper triangular Matrix or not.<br><br>
+ * 
+ * Upper triangular Matrix is a Matrix in which all the entries below the
+ * main diagonal are zero. Note that it can be applied to any non-square Matrix.<br><br>
+ *  
  * The result is cached.
- * @param { Number } digit - Number of significant digits
- * @return { Boolean } - Returns true if the matrix is upper triangular
+ * @memberof Matrix
+ * @instance
+ * @param {number} [digit=8] - Number of significant digits
+ * @returns {boolean} Returns true if the Matrix is upper triangular
  */
-
-module.exports = function isUpperTriangular(digit = this._digit) {
+function isUpperTriangular(digit = this._digit) {
   if (this._isUpperTriangular !== undefined) {
     return this._isUpperTriangular;
   }
@@ -34,3 +38,5 @@ module.exports = function isUpperTriangular(digit = this._digit) {
   this._isUpperTriangular = true;
   return true;
 };
+
+module.exports = isUpperTriangular;

@@ -1,10 +1,13 @@
 /**
- * Find the nullity of any matrix.
+ * Calculates the nullity of any Matrix, which is the dimension
+ * of the nullspace.<br><br>
+ * 
  * The nullity is cached.
- * @return { Number } - Returns the nullity of the matrix
+ * @memberof Matrix
+ * @instance
+ * @returns {number} The nullity of the matrix
  */
-
-module.exports = function nullity() {
+function nullity() {
   if (this._nullity !== undefined) {
     return this._nullity;
   }
@@ -15,3 +18,5 @@ module.exports = function nullity() {
   this._nullity = col - rank;
   return this._nullity;
 };
+
+module.exports = nullity;

@@ -1,6 +1,9 @@
 /src
+/docs
 .eslintrc
 .gitignore
 .babelrc
+jsdoc.config.json
 package-lock.json
+LICENSE
 TODO

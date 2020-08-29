@@ -1,13 +1,17 @@
 const { INVALID_MATRIX } = require('../../Error');
 
 /**
- * Find the QR decomposition of a matrix,
- * where Q is orthogonal matrix, R is upper triangular matrix.
- * @param { Matrix } A - Any matrix
- * @return { Array } - Returns [Q, R], which is the QR decomposition of A
+ * Calculates the QR decomposition of the Matrix
+ * where Q is orthogonal matrix, R is upper triangular matrix.<br><br>
+ * 
+ * The algorithm is implemented using Householder Transform instead of Gram–Schmidt process
+ * because the Householder Transform is more numerically stable.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any matrix
+ * @returns {Matrix[]} The QR decomposition of matrix in the form of [Q, R]
  */
-
-module.exports = function QR(A) {
+function QR(A) {
   if (!(A instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -102,3 +106,5 @@ module.exports = function QR(A) {
 
   return [new this(matrixQ), new this(matrixR)];
 };
+
+module.exports = QR;

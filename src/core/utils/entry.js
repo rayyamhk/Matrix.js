@@ -1,13 +1,14 @@
 const { INVALID_ROW_COL, OVERFLOW_INDEX } = require('../../Error');
 
 /**
- * Get the entry of a matrix.
- * @param { Integer } row - Any valid row index
- * @param { Integer } col - Any valid column index
- * @return { Number } - Returns entry of the matrix
+ * Gets the entry of a Matrix.
+ * @memberof Matrix
+ * @instance
+ * @param {number} row - Any valid row index
+ * @param {number} col - Any valid column index
+ * @returns {number} Entry of the Matrix
  */
-
-module.exports = function entry(row, col) {
+function entry(row, col) {
   if (!Number.isInteger(row) || row < 0 || !Number.isInteger(col) || col < 0) {
     throw new Error(INVALID_ROW_COL);
   }
@@ -19,3 +20,5 @@ module.exports = function entry(row, col) {
   }
   return A[row][col];
 };
+
+module.exports = entry;

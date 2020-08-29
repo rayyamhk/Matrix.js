@@ -1,13 +1,14 @@
 const { INVALID_ROW_COL, OVERFLOW_COLUMN, INVALID_MATRIX } = require('../../Error');
 
 /**
- * Get the column of a matrix with valid index.
- * @param { Matrix } A - Any matrix
- * @param { Integer } index - Any valid column index
- * @return { Matrix } - Returns column of A
+ * Gets the column of a Matrix with valid index.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any Matrix
+ * @param {number} index - Any valid column index
+ * @returns {Matrix} Column of A
  */
-
-module.exports = function column(A, index) {
+function column(A, index) {
   if (!(A instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -26,3 +27,5 @@ module.exports = function column(A, index) {
 
   return this.generate(r, 1, (i) => matrix[i][index]);
 };
+
+module.exports = column;

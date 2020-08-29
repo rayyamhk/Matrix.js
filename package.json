@@ -36,7 +36,8 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "npm run test && babel src --out-dir lib --ignore src/**/*.test.js",
-    "test": "eslint && jest --testPathPattern=src/tests"
+    "test": "eslint && jest --testPathPattern=src/tests",
+    "jsdoc": "jsdoc -c ./jsdoc.config.json ./README.md"
   },
   "husky": {
     "hooks": {

@@ -1,12 +1,16 @@
 /**
- * Determine whether a matrix is diagonal matrix or not.
- * Note that the diagonality is not limited to square matrix.
+ * Determines whether a Matrix is diagonal or not.<br><br>
+ * 
+ * Diagonal Matrix is a Matrix in which the entries outside the main diagonal
+ * are all zero. Note that the term diagonal refers to rectangular diagonal.<br><br>
+ * 
  * The result is cached.
- * @param { Number } digit - Number of significant digits
- * @return { Boolean } - Returns true if the matrix is diagonal matrix
+ * @memberof Matrix
+ * @instance
+ * @param {number} [digit=8] - Number of significant digits
+ * @returns {boolean} Returns rue if the Matrix is diagonal Matrix
  */
-
-module.exports = function isDiagonal(digit = this._digit) {
+function isDiagonal(digit = this._digit) {
   if (this._isDiagonal !== undefined) {
     return this._isDiagonal;
   }
@@ -31,3 +35,5 @@ module.exports = function isDiagonal(digit = this._digit) {
   this._isDiagonal = true;
   return true;
 };
+
+module.exports = isDiagonal;
