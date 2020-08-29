@@ -49,7 +49,8 @@ npm run test
 It runs all tests in `/src/tests`
 
 ## API
-You can find the documentation in the following link:\
+You can find the documentation in the following link:
+
 [https://rayyamhk.github.io/Matrix.js/Matrix.html](https://rayyamhk.github.io/Matrix.js/Matrix.html)
 
 ## Examples
