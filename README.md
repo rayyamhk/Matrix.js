@@ -2,7 +2,7 @@
 A professional, comprehensive and high-performance library for you to manipulate matrices.
 
 ## Features
-- 6 Categories: *Decompositions*, *Linear Equations*, *Operations*, *Properties*, *Structure* and *Utilities*
+- 6 Categories: [Decompositions](#decompositions), [Linear Equations](#linearequations), [Operations](#operations), [Properties](#properties), [Structure](#structure) and [Utilities](#utilities)
 - Professional
 - Comprehensive
 - High-performance
