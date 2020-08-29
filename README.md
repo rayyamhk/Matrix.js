@@ -49,7 +49,7 @@ npm run test
 It runs all tests in `/src/tests`
 
 ## API
-[https://rayyamhk.github.io/Matrix.js/index.html](https://rayyamhk.github.io/Matrix.js/index.html)
+[https://rayyamhk.github.io/Matrix.js/](https://rayyamhk.github.io/Matrix.js/)
 
 ## Examples
 
