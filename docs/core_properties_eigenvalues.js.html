@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>core/properties/eigenvalues.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Matrix.html">Matrix</a><ul class='methods'><li data-type='method'><a href="Matrix.html#.LU">LU</a></li><li data-type='method'><a href="Matrix.html#.QR">QR</a></li><li data-type='method'><a href="Matrix.html#.backward">backward</a></li><li data-type='method'><a href="Matrix.html#.forward">forward</a></li><li data-type='method'><a href="Matrix.html#.solve">solve</a></li><li data-type='method'><a href="Matrix.html#.add">add</a></li><li data-type='method'><a href="Matrix.html#.inverse">inverse</a></li><li data-type='method'><a href="Matrix.html#.multiply">multiply</a></li><li data-type='method'><a href="Matrix.html#.pow">pow</a></li><li data-type='method'><a href="Matrix.html#.transpose">transpose</a></li><li data-type='method'><a href="Matrix.html#cond">cond</a></li><li data-type='method'><a href="Matrix.html#det">det</a></li><li data-type='method'><a href="Matrix.html#eigenvalues">eigenvalues</a></li><li data-type='method'><a href="Matrix.html#norm">norm</a></li><li data-type='method'><a href="Matrix.html#nullity">nullity</a></li><li data-type='method'><a href="Matrix.html#rank">rank</a></li><li data-type='method'><a href="Matrix.html#size">size</a></li><li data-type='method'><a href="Matrix.html#trace">trace</a></li><li data-type='method'><a href="Matrix.html#isDiagonal">isDiagonal</a></li><li data-type='method'><a href="Matrix.html#isLowerTriangular">isLowerTriangular</a></li><li data-type='method'><a href="Matrix.html#isOrthogonal">isOrthogonal</a></li><li data-type='method'><a href="Matrix.html#isSkewSymmetric">isSkewSymmetric</a></li><li data-type='method'><a href="Matrix.html#isSquare">isSquare</a></li><li data-type='method'><a href="Matrix.html#isSymmetric">isSymmetric</a></li><li data-type='method'><a href="Matrix.html#isUpperTriangular">isUpperTriangular</a></li><li data-type='method'><a href="Matrix.html#.clone">clone</a></li><li data-type='method'><a href="Matrix.html#.column">column</a></li><li data-type='method'><a href="Matrix.html#.diag">diag</a></li><li data-type='method'><a href="Matrix.html#.elementwise">elementwise</a></li><li data-type='method'><a href="Matrix.html#entry">entry</a></li><li data-type='method'><a href="Matrix.html#.generate">generate</a></li><li data-type='method'><a href="Matrix.html#.getDiag">getDiag</a></li><li data-type='method'><a href="Matrix.html#.getRandomMatrix">getRandomMatrix</a></li><li data-type='method'><a href="Matrix.html#.identity">identity</a></li><li data-type='method'><a href="Matrix.html#.isEqual">isEqual</a></li><li data-type='method'><a href="Matrix.html#.row">row</a></li><li data-type='method'><a href="Matrix.html#.submatrix">submatrix</a></li><li data-type='method'><a href="Matrix.html#toString">toString</a></li><li data-type='method'><a href="Matrix.html#.zero">zero</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">core/properties/eigenvalues.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* eslint-disable no-param-reassign */
+// reference: https://people.inf.ethz.ch/arbenz/ewp/Lnotes/chapter4.pdf
+
+const Complex = require('@rayyamhk/complex');
+const Matrix = require('../..');
+const { INVALID_SQUARE_MATRIX } = require('../../Error');
+
+/**
+ * Calculates the eigenvalues of any square Matrix using QR Algorithm.&lt;br>&lt;br>
+ * 
+ * The eigenvalues can be either real number or complex number.
+ * Note that all eigenvalues are instance of Complex,
+ * for more details please visit [Complex.js]{@link https://github.com/rayyamhk/Complex.js}.&lt;br>&lt;br>
+ * 
+ * The eigenvalues are cached.
+ * @memberof Matrix
+ * @instance
+ * @returns {Complex[]} Array of eigenvalues
+ */
+
+function eigenvalues() {
+  if (!this.isSquare()) {
+    throw new Error(INVALID_SQUARE_MATRIX);
+  }
+
+  if (this._eigenvalues !== undefined) {
+    return this._eigenvalues;
+  }
+
+  const size = this.size()[0];
+  const values = [];
+  const digit = this._digit;
+  const EPSILON = 1 / ((10 ** digit) * 2);
+
+  const clone = Matrix.clone(this)._matrix;
+  let isConvergent = true; // flag
+  let skip = false;
+
+  // Transform matrix to Hessenberg matrix
+  HouseholderTransform(clone, digit);
+
+  for (let i = size - 1; i > 0; i--) {
+    let divergenceCount = 0;
+    let prev; // used to determine convergence
+
+    // if obtains complex eigenvalues pair in previous iteration, skip current round
+    if (skip) {
+      skip = false;
+      continue;
+    }
+
+    const shift = clone[size - 1][size - 1];
+
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      if (!isConvergent) { // if the current eigenvalue is not real
+        prev = size2Eigenvalues(
+          clone[i - 1][i - 1],
+          clone[i - 1][i],
+          clone[i][i - 1],
+          clone[i][i],
+        ).metric;
+      } else { // if the current eigenvalue is real
+        prev = Math.abs(clone[i][i - 1]);
+      }
+
+      // apply single shift
+      for (let j = 0; j &lt; size; j++) {
+        clone[j][j] -= shift;
+      }
+
+      // Apply QR Algorithm
+      HessenbergQR(clone, digit);
+
+      for (let j = 0; j &lt; size; j++) {
+        clone[j][j] += shift;
+      }
+
+      if (isConvergent &amp;&amp; prev &lt; Math.abs(clone[i][i - 1])) {
+        divergenceCount++;
+      }
+
+      // if the current eigenvalue is real and the entry is almost ZERO => break;
+      if (isConvergent &amp;&amp; Math.abs(clone[i][i - 1]) &lt; EPSILON) {
+        values[i] = new Complex(clone[i][i]);
+        break;
+      }
+
+      // if the current eigenvalues pair is complex, if the difference of the previous eiganvalues and the
+      // eigenvalues of submatrix is almost ZERO => break
+      const {
+        metric,
+        eigen1,
+        eigen2,
+      } = size2Eigenvalues(clone[i - 1][i - 1], clone[i - 1][i], clone[i][i - 1], clone[i][i]);
+      if (!isConvergent &amp;&amp; Math.abs(prev - metric) &lt; EPSILON) {
+        isConvergent = true; // re-initialize
+        skip = true;
+        const { re: re1, im: im1 } = eigen1;
+        const { re: re2, im: im2 } = eigen2;
+        values[i] = new Complex(re1, im1);
+        values[i - 1] = new Complex(re2, im2);
+        break;
+      }
+
+      // if the entry doesn't converge => complex eigenvalues pair
+      if (divergenceCount > 3) {
+        isConvergent = false;
+      }
+    }
+  }
+
+  if (!skip) {
+    values[0] = new Complex(clone[0][0]);
+  }
+
+  this._eigenvalues = values;
+  return values;
+};
+
+function HouseholderTransform(A, digit) {
+  const size = A.length;
+  const EPSILON = 1 / ((10 ** digit) * 2);
+
+  for (let j = 0; j &lt; size - 2; j++) {
+    let xNorm = 0;
+    const u = new Array(size - j - 1);
+    for (let i = j + 1; i &lt; size; i++) {
+      const entry = A[i][j];
+      xNorm += entry ** 2;
+      u[i - j - 1] = entry;
+    }
+    xNorm = Math.sqrt(xNorm);
+
+    if (Math.abs(xNorm) &lt; EPSILON) {
+      continue;
+    }
+
+    if (u[0] >= 0) {
+      u[0] += xNorm;
+    } else {
+      u[0] -= xNorm;
+    }
+
+    // Make 'u' unit vector
+    let uNorm = 0;
+    for (let i = 0; i &lt; u.length; i++) {
+      uNorm += u[i] ** 2;
+    }
+    uNorm = Math.sqrt(uNorm);
+
+    for (let i = 0; i &lt; u.length; i++) {
+      u[i] /= uNorm;
+    }
+
+    // update the matrix, multiply P from left
+    for (let n = j; n &lt; size; n++) { // column
+      const v = new Array(size - j - 1);
+      for (let m = j + 1; m &lt; size; m++) {
+        v[m - j - 1] = A[m][n];
+      }
+
+      let scaler = 0;
+      for (let m = 0; m &lt; v.length; m++) {
+        scaler += v[m] * u[m];
+      }
+      scaler *= 2;
+
+      for (let m = j + 1; m &lt; size; m++) { // row
+        if (n === j &amp;&amp; m !== j + 1) {
+          A[m][n] = 0;
+        } else {
+          A[m][n] = v[m - j - 1] - scaler * u[m - j - 1];
+        }
+      }
+    }
+
+    // update the matrix, multiply P from right
+    for (let m = 0; m &lt; size; m++) { // row
+      const v = new Array(size - j - 1);
+      for (let n = j + 1; n &lt; size; n++) {
+        v[n - j - 1] = A[m][n];
+      }
+
+      let scaler = 0;
+      for (let n = 0; n &lt; v.length; n++) {
+        scaler += v[n] * u[n];
+      }
+      scaler *= 2;
+
+      for (let n = j + 1; n &lt; size; n++) { // column
+        A[m][n] = v[n - j - 1] - scaler * u[n - j - 1];
+      }
+    }
+  }
+}
+
+function HessenbergQR(H, digit) {
+  const size = H.length;
+  const EPSILON = 1 / ((10 ** digit) * 2);
+  const sincos = new Array(size - 1);
+
+  for (let i = 0; i &lt; size - 1; i++) {
+    const a = H[i][i];
+    const c = H[i + 1][i];
+
+    const norm = Math.sqrt(a ** 2 + c ** 2);
+    if (norm &lt; EPSILON) {
+      continue;
+    }
+    const cos = a / norm;
+    const sin = (c * -1) / norm;
+    sincos[i] = [sin, cos];
+
+    const row1 = new Array(size - i);
+    const row2 = new Array(size - i);
+
+    for (let j = i; j &lt; size; j++) {
+      row1[j - i] = H[i][j];
+      row2[j - i] = H[i + 1][j];
+    }
+
+    for (let j = i; j &lt; size; j++) {
+      H[i][j] = cos * row1[j - i] + sin * -1 * row2[j - i];
+      if (i === j) {
+        H[i + 1][j] = 0;
+      } else {
+        H[i + 1][j] = sin * row1[j - i] + cos * row2[j - i];
+      }
+    }
+  }
+
+  for (let j = 0; j &lt; size - 1; j++) {
+    if (!sincos[j]) {
+      continue;
+    }
+    const [sin, cos] = sincos[j];
+
+    const col1 = new Array(j + 2);
+    const col2 = new Array(j + 2);
+    for (let i = 0; i &lt;= j + 1; i++) {
+      col1[i] = H[i][j];
+      col2[i] = H[i][j + 1];
+    }
+
+    for (let i = 0; i &lt;= j + 1; i++) {
+      H[i][j] = col1[i] * cos - col2[i] * sin;
+      H[i][j + 1] = col1[i] * sin + col2[i] * cos;
+    }
+  }
+}
+
+// find the eigenvalues of 2x2 matrix
+function size2Eigenvalues(e11, e12, e21, e22) {
+  const b = (e11 + e22) * -1;
+  const c = (e11 * e22 - e21 * e12);
+  const delta = b ** 2 - 4 * c;
+  let re1;
+  let im1;
+  let re2;
+  let im2;
+  if (delta >= 0) {
+    im1 = 0;
+    im2 = 0;
+    if (b >= 0) {
+      re1 = (b * -1 - Math.sqrt(delta)) / 2;
+    } else {
+      re1 = (b * -1 + Math.sqrt(delta)) / 2;
+    }
+    re2 = c / re1;
+  } else {
+    re1 = -b / 2;
+    re2 = re1;
+    im1 = Math.sqrt(delta * -1) / 2;
+    im2 = im1 * -1;
+  }
+  return {
+    metric: Math.sqrt(re1 ** 2 + im1 ** 2),
+    eigen1: { re: re1, im: im1 },
+    eigen2: { re: re2, im: im2 },
+  };
+}
+
+module.exports = eigenvalues;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Sat Aug 29 2020 23:56:23 GMT+0800 (GMT+08:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+</body>
+</html>

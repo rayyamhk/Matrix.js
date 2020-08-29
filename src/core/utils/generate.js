@@ -1,15 +1,24 @@
 const empty = require('../../util/empty');
 
 /**
- * Generate a matrix which entries are the returned value of callback function.
- * @param { Integer } row - Number of rows of matrix
- * @param { Integer } col - Number of columns of matrix
- * @param { Function } cb - Callback function which takes row and column as arguments
- * and generate the corresponding entry
- * @return { Matrix } - Returns generated matrix
+ * This callback generates each entry of a Matrix
+ * @callback generateCallback
+ * @param {number} i - The i-th row of Matrix 
+ * @param {number} j - The j-th column of Matrix 
+ * @returns {number} Entry of Matrix
  */
 
-module.exports = function generate(row, col, cb) {
+/**
+ * Generates a Matrix which entries are the returned value of callback function.
+ * @memberof Matrix
+ * @static
+ * @param {number} row - Number of rows of Matrix
+ * @param {number} col - Number of columns of Matrix
+ * @param {generateCallback} cb - Callback function which takes row and column as arguments
+ * and generates the corresponding entry
+ * @returns {Matrix} - Generated Matrix
+ */
+function generate(row, col, cb) {
   const matrix = empty(row, col);
   if (row === 0 || col === 0) {
     return new this([]);
@@ -21,3 +30,5 @@ module.exports = function generate(row, col, cb) {
   }
   return new this(matrix);
 };
+
+module.exports = generate;

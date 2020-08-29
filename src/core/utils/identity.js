@@ -1,10 +1,11 @@
 /**
- * Generate identity matrix with given size.
- * @param { Integer } size - The size of matrix
- * @return { Matrix } - Returns identity matrix
+ * Generates identity Matrix with given size.
+ * @memberof Matrix
+ * @static
+ * @param {number} size - The size of Matrix
+ * @returns {Matrix} Identity Matrix
  */
-
-module.exports = function identity(size) {
+function identity(size) {
   return this.generate(size, size, (i, j) => {
     if (i === j) {
       return 1;
@@ -12,3 +13,5 @@ module.exports = function identity(size) {
     return 0;
   });
 };
+
+module.exports = identity;

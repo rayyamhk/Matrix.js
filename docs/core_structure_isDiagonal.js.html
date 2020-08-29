@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>core/structure/isDiagonal.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Matrix.html">Matrix</a><ul class='methods'><li data-type='method'><a href="Matrix.html#.LU">LU</a></li><li data-type='method'><a href="Matrix.html#.QR">QR</a></li><li data-type='method'><a href="Matrix.html#.backward">backward</a></li><li data-type='method'><a href="Matrix.html#.forward">forward</a></li><li data-type='method'><a href="Matrix.html#.solve">solve</a></li><li data-type='method'><a href="Matrix.html#.add">add</a></li><li data-type='method'><a href="Matrix.html#.inverse">inverse</a></li><li data-type='method'><a href="Matrix.html#.multiply">multiply</a></li><li data-type='method'><a href="Matrix.html#.pow">pow</a></li><li data-type='method'><a href="Matrix.html#.transpose">transpose</a></li><li data-type='method'><a href="Matrix.html#cond">cond</a></li><li data-type='method'><a href="Matrix.html#det">det</a></li><li data-type='method'><a href="Matrix.html#eigenvalues">eigenvalues</a></li><li data-type='method'><a href="Matrix.html#norm">norm</a></li><li data-type='method'><a href="Matrix.html#nullity">nullity</a></li><li data-type='method'><a href="Matrix.html#rank">rank</a></li><li data-type='method'><a href="Matrix.html#size">size</a></li><li data-type='method'><a href="Matrix.html#trace">trace</a></li><li data-type='method'><a href="Matrix.html#isDiagonal">isDiagonal</a></li><li data-type='method'><a href="Matrix.html#isLowerTriangular">isLowerTriangular</a></li><li data-type='method'><a href="Matrix.html#isOrthogonal">isOrthogonal</a></li><li data-type='method'><a href="Matrix.html#isSkewSymmetric">isSkewSymmetric</a></li><li data-type='method'><a href="Matrix.html#isSquare">isSquare</a></li><li data-type='method'><a href="Matrix.html#isSymmetric">isSymmetric</a></li><li data-type='method'><a href="Matrix.html#isUpperTriangular">isUpperTriangular</a></li><li data-type='method'><a href="Matrix.html#.clone">clone</a></li><li data-type='method'><a href="Matrix.html#.column">column</a></li><li data-type='method'><a href="Matrix.html#.diag">diag</a></li><li data-type='method'><a href="Matrix.html#.elementwise">elementwise</a></li><li data-type='method'><a href="Matrix.html#entry">entry</a></li><li data-type='method'><a href="Matrix.html#.generate">generate</a></li><li data-type='method'><a href="Matrix.html#.getDiag">getDiag</a></li><li data-type='method'><a href="Matrix.html#.getRandomMatrix">getRandomMatrix</a></li><li data-type='method'><a href="Matrix.html#.identity">identity</a></li><li data-type='method'><a href="Matrix.html#.isEqual">isEqual</a></li><li data-type='method'><a href="Matrix.html#.row">row</a></li><li data-type='method'><a href="Matrix.html#.submatrix">submatrix</a></li><li data-type='method'><a href="Matrix.html#toString">toString</a></li><li data-type='method'><a href="Matrix.html#.zero">zero</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">core/structure/isDiagonal.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Determines whether a Matrix is diagonal or not.&lt;br>&lt;br>
+ * 
+ * Diagonal Matrix is a Matrix in which the entries outside the main diagonal
+ * are all zero. Note that the term diagonal refers to rectangular diagonal.&lt;br>&lt;br>
+ * 
+ * The result is cached.
+ * @memberof Matrix
+ * @instance
+ * @param {number} [digit=8] - Number of significant digits
+ * @returns {boolean} Returns rue if the Matrix is diagonal Matrix
+ */
+function isDiagonal(digit = this._digit) {
+  if (this._isDiagonal !== undefined) {
+    return this._isDiagonal;
+  }
+
+  const EPSILON = 1 / ((10 ** digit) * 2);
+  const A = this._matrix;
+  const [row, col] = this.size();
+
+  if (row === 0) {
+    this._isDiagonal = true;
+    return true;
+  }
+
+  for (let i = 0; i &lt; row; i++) {
+    for (let j = 0; j &lt; col; j++) {
+      if (i !== j &amp;&amp; Math.abs(A[i][j]) >= EPSILON) {
+        this.isDiagonal = false;
+        return false;
+      }
+    }
+  }
+  this._isDiagonal = true;
+  return true;
+};
+
+module.exports = isDiagonal;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Sat Aug 29 2020 23:56:23 GMT+0800 (GMT+08:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+</body>
+</html>

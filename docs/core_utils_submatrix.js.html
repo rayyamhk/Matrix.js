@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>core/utils/submatrix.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Matrix.html">Matrix</a><ul class='methods'><li data-type='method'><a href="Matrix.html#.LU">LU</a></li><li data-type='method'><a href="Matrix.html#.QR">QR</a></li><li data-type='method'><a href="Matrix.html#.backward">backward</a></li><li data-type='method'><a href="Matrix.html#.forward">forward</a></li><li data-type='method'><a href="Matrix.html#.solve">solve</a></li><li data-type='method'><a href="Matrix.html#.add">add</a></li><li data-type='method'><a href="Matrix.html#.inverse">inverse</a></li><li data-type='method'><a href="Matrix.html#.multiply">multiply</a></li><li data-type='method'><a href="Matrix.html#.pow">pow</a></li><li data-type='method'><a href="Matrix.html#.transpose">transpose</a></li><li data-type='method'><a href="Matrix.html#cond">cond</a></li><li data-type='method'><a href="Matrix.html#det">det</a></li><li data-type='method'><a href="Matrix.html#eigenvalues">eigenvalues</a></li><li data-type='method'><a href="Matrix.html#norm">norm</a></li><li data-type='method'><a href="Matrix.html#nullity">nullity</a></li><li data-type='method'><a href="Matrix.html#rank">rank</a></li><li data-type='method'><a href="Matrix.html#size">size</a></li><li data-type='method'><a href="Matrix.html#trace">trace</a></li><li data-type='method'><a href="Matrix.html#isDiagonal">isDiagonal</a></li><li data-type='method'><a href="Matrix.html#isLowerTriangular">isLowerTriangular</a></li><li data-type='method'><a href="Matrix.html#isOrthogonal">isOrthogonal</a></li><li data-type='method'><a href="Matrix.html#isSkewSymmetric">isSkewSymmetric</a></li><li data-type='method'><a href="Matrix.html#isSquare">isSquare</a></li><li data-type='method'><a href="Matrix.html#isSymmetric">isSymmetric</a></li><li data-type='method'><a href="Matrix.html#isUpperTriangular">isUpperTriangular</a></li><li data-type='method'><a href="Matrix.html#.clone">clone</a></li><li data-type='method'><a href="Matrix.html#.column">column</a></li><li data-type='method'><a href="Matrix.html#.diag">diag</a></li><li data-type='method'><a href="Matrix.html#.elementwise">elementwise</a></li><li data-type='method'><a href="Matrix.html#entry">entry</a></li><li data-type='method'><a href="Matrix.html#.generate">generate</a></li><li data-type='method'><a href="Matrix.html#.getDiag">getDiag</a></li><li data-type='method'><a href="Matrix.html#.getRandomMatrix">getRandomMatrix</a></li><li data-type='method'><a href="Matrix.html#.identity">identity</a></li><li data-type='method'><a href="Matrix.html#.isEqual">isEqual</a></li><li data-type='method'><a href="Matrix.html#.row">row</a></li><li data-type='method'><a href="Matrix.html#.submatrix">submatrix</a></li><li data-type='method'><a href="Matrix.html#toString">toString</a></li><li data-type='method'><a href="Matrix.html#.zero">zero</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">core/utils/submatrix.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const {
+  INVALID_MATRIX,
+  EXPECTED_STRING_NUMBER_AT_POS_1_2,
+  INVALID_ROW,
+  INVALID_COLUMN,
+  OVERFLOW_ROW,
+  INVALID_ROWS_EXPRESSION,
+  INVALID_COLUMNS_EXPRESSION,
+  OVERFLOW_COLUMN,
+} = require('../../Error');
+
+/**
+ * Generates a submatrix of a matrix.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any matrix
+ * @param {string|number} rows - Rows expression
+ * @param {string|number} cols - Columns expression
+ * @returns {Matrix} Submatrix of A
+ */
+function submatrix(A, rows, cols) {
+  if (!(A instanceof this)) {
+    throw new Error(INVALID_MATRIX);
+  }
+
+  const arg1Type = typeof rows;
+  const arg2Type = typeof cols;
+
+  if ((arg1Type !== 'string' &amp;&amp; arg1Type !== 'number') || (arg2Type !== 'string' &amp;&amp; arg2Type !== 'number')) {
+    throw new Error(EXPECTED_STRING_NUMBER_AT_POS_1_2);
+  }
+
+  const [row, col] = A.size();
+  let rowStart;
+  let rowEnd;
+  let colStart;
+  let colEnd;
+
+  if (arg1Type === 'number') {
+    if (!Number.isInteger(rows) || rows &lt; 0) {
+      throw new Error(INVALID_ROW);
+    }
+
+    if (rows >= row) {
+      throw new Error(OVERFLOW_ROW);
+    }
+
+    rowStart = rows;
+    rowEnd = rows;
+  } else { // string
+    const arg = rows.split(':');
+    if (arg.length !== 2) {
+      throw new Error(INVALID_ROWS_EXPRESSION);
+    }
+    const [r1, r2] = arg;
+    if (r1 === '') {
+      rowStart = 0;
+    } else {
+      const r = Number(r1);
+      if (!Number.isInteger(r) || r &lt; 0) {
+        throw new Error(INVALID_ROW);
+      }
+      if (r >= row) {
+        throw new Error(OVERFLOW_ROW);
+      }
+      rowStart = r;
+    }
+
+    if (r2 === '') {
+      rowEnd = row - 1;
+    } else {
+      const r = Number(r2);
+      if (!Number.isInteger(r) || r &lt; 0) {
+        throw new Error(INVALID_ROW);
+      }
+      if (r >= row) {
+        throw new Error(OVERFLOW_ROW);
+      }
+      rowEnd = r;
+    }
+    if (rowStart > rowEnd) {
+      throw new Error(INVALID_ROWS_EXPRESSION);
+    }
+  }
+
+  if (arg2Type === 'number') {
+    if (!Number.isInteger(cols) || cols &lt; 0) {
+      throw new Error(INVALID_COLUMN);
+    }
+
+    if (cols >= col) {
+      throw new Error(OVERFLOW_COLUMN);
+    }
+
+    colStart = cols;
+    colEnd = cols;
+  } else { // string
+    const arg = cols.split(':');
+    if (arg.length !== 2) {
+      throw new Error(INVALID_COLUMNS_EXPRESSION);
+    }
+    const [c1, c2] = arg;
+    if (c1 === '') {
+      colStart = 0;
+    } else {
+      const c = Number(c1);
+      if (!Number.isInteger(c) || c &lt; 0) {
+        throw new Error(INVALID_COLUMN);
+      }
+      if (c >= col) {
+        throw new Error(OVERFLOW_COLUMN);
+      }
+      colStart = c;
+    }
+
+    if (c2 === '') {
+      colEnd = col - 1;
+    } else {
+      const c = Number(c2);
+      if (!Number.isInteger(c) || c &lt; 0) {
+        throw new Error(INVALID_COLUMN);
+      }
+      if (c >= col) {
+        throw new Error(OVERFLOW_COLUMN);
+      }
+      colEnd = c;
+    }
+    if (colStart > colEnd) {
+      throw new Error(INVALID_COLUMNS_EXPRESSION);
+    }
+  }
+
+  const matrix = A._matrix;
+  const subRow = rowEnd - rowStart + 1;
+  const subCol = colEnd - colStart + 1;
+
+  const subMatrix = new Array(subRow);
+
+  for (let i = rowStart; i &lt;= rowEnd; i++) {
+    const newRow = new Array(subCol);
+    for (let j = colStart; j &lt;= colEnd; j++) {
+      newRow[j - colStart] = matrix[i][j];
+    }
+    subMatrix[i - rowStart] = newRow;
+  }
+
+  return new this(subMatrix);
+};
+
+module.exports = submatrix;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Sat Aug 29 2020 23:56:23 GMT+0800 (GMT+08:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+</body>
+</html>

@@ -1,10 +1,12 @@
 const { SIZE_INCOMPATIBLE, INVALID_MATRIX } = require('../../Error');
 
 /**
- * Find the difference of two matrices.
- * @param { Matrix } A - Any matrix
- * @param { Matrix } B - Any matrix that has same size with A
- * @return { Matrix } - Returns difference of two matrices
+ * Calculates the difference of two Matrices.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any Matrix
+ * @param {Matrix} B - Any Matrix that has same size with A
+ * @returns {Matrix} The difference of two Matrices
  */
 
 module.exports = function subtract(A, B) {

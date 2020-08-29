@@ -1,11 +1,16 @@
 /**
- * Determine whether a square matrix is orthogonal or not.
+ * Determines whether a square Matrix is orthogonal or not.<br><br>
+ * 
+ * Orthogonal Matrix is a Matrix in which all rows and columns are
+ * orthonormal vectors.<br><br>
+ * 
  * The result is cached.
- * @param { Number } digit - Number of significant digits
- * @return { Boolean } - Returns true if the square matrix is orthogonal
+ * @memberof Matrix
+ * @instance
+ * @param {number} [digit=8] - Number of significant digits
+ * @returns {boolean} Returns true if the square Matrix is orthogonal
  */
-
-module.exports = function isOrthogonal(digit = this._digit) {
+function isOrthogonal(digit = this._digit) {
   if (this._isOrthogonal !== undefined) {
     return this._isOrthogonal;
   }
@@ -38,3 +43,5 @@ module.exports = function isOrthogonal(digit = this._digit) {
   this._isOrthogonal = true;
   return true;
 };
+
+module.exports = isOrthogonal;

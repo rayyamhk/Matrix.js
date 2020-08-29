@@ -3,12 +3,15 @@ const Matrix = require('../..');
 const { INVALID_SQUARE_MATRIX } = require('../../Error');
 
 /**
- * Find the determinant of square matrirx.
+ * Calculates the determinant of square Matrix.
+ * If the Matrix size is larger than 3, it calculates the determinant using
+ * LU decomposition, otherwise, using Leibniz Formula.<br><br>
  * The determinant is cached.
- * @return { Number } - Returns the determinant of square matrirx
+ * @memberof Matrix
+ * @instance
+ * @returns {number} Returns the determinant of square matrirx
  */
-
-module.exports = function det() {
+function det() {
   if (!this.isSquare()) {
     throw new Error(INVALID_SQUARE_MATRIX);
   }
@@ -75,3 +78,5 @@ module.exports = function det() {
   this._det = result;
   return result;
 };
+
+module.exports = det;

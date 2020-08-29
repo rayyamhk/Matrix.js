@@ -8,15 +8,16 @@ const {
 } = require('../../Error');
 
 /**
- * Solve system of linear equations Lx = y,
+ * Solve system of linear equations Lx = y using forward substitution,
  * where L is a lower triangular matrix.
  * If there is no unique solutions, an error is thrown.
- * @param { Matrix } L - n x n lower triangular matrix
- * @param { Matrix } y - n x 1 matrix
- * @return { Matrix } - Returns n x 1 matrix which is the solution of Lx = y
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} L - Any n x n lower triangular Matrix
+ * @param {Matrix} y - Any n x 1 Matrix
+ * @returns {Matrix} n x 1 Matrix which is the solution of Lx = y
  */
-
-module.exports = function forward(L, y) {
+function forward(L, y) {
   if (!(L instanceof this) || !(y instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -58,3 +59,5 @@ module.exports = function forward(L, y) {
 
   return new this(coefficients);
 };
+
+module.exports = forward;

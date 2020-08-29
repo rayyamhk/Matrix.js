@@ -7,16 +7,17 @@ const {
   NO_UNIQUE_SOLUTION,
 } = require('../../Error');
 
-/**
- * Solve system of linear equations Ux = y,
+ /**
+ * Solve system of linear equations Ux = y using backward substitution,
  * where U is an upper triangular matrix.
  * If there is no unique solutions, an error is thrown.
- * @param { Matrix } U - n x n upper triangular matrix
- * @param { Matrix } y - n x 1 matrix
- * @return { Matrix } - Returns n x 1 matrix which is the solution of Ux = y
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} U - Any n x n upper triangular Matrix
+ * @param {Matrix} y - Any n x 1 Matrix
+ * @returns {Matrix} n x 1 Matrix which is the solution of Ux = y
  */
-
-module.exports = function backward(U, y) {
+function backward(U, y) {
   if (!(U instanceof this) || !(y instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -58,3 +59,5 @@ module.exports = function backward(U, y) {
 
   return new this(coefficients);
 };
+
+module.exports = backward;

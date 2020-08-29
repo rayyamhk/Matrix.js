@@ -1,15 +1,22 @@
 const { INVALID_MATRIX } = require('../../Error');
 
 /**
- * Find the LUP decomposition of a matrix,
- * where L is lower triangular matrix, U is upper triangular matrix,
- * and P is permutation matrix.
- * @param { Matrix } A - Any matrix
- * @param { Boolean } optimized - Return [P, LU] if it is true, [P, L, U] if it is false
- * @return { Array } - Returns the LUP decomposition of matrix
+ * Calculates the LUP decomposition of the Matrix,
+ * where L is lower triangular matrix which diagonal entries are always 1,
+ * U is upper triangular matrix, and P is permutation matrix.<br><br>
+ * 
+ * It is implemented using Gaussian Elimination with Partial Pivoting in order to
+ * reduce the error caused by floating-point arithmetic.<br><br>
+ * 
+ * Note that if optimized is true, P is a Permutation Array and both L and U are merged
+ * into one matrix in order to improve performance.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any matrix
+ * @param {boolean} [optimized=false] - Returns [P, LU] if it is true, [P, L, U] if it is false
+ * @returns {Matrix[]} The LUP decomposition of Matrix
  */
-
-module.exports = function LU(A, optimized = false) {
+function LU(A, optimized = false) {
   if (!(A instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -106,3 +113,5 @@ function PartialPivoting(matrix, permutation, pos, row, col) {
   permutation[pos] = permutation[maxIdx];
   permutation[maxIdx] = t;
 }
+
+module.exports = LU;

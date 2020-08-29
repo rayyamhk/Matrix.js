@@ -21,6 +21,7 @@
     "no-use-before-define": "off"
   },
   "ignorePatterns": [
-    "lib/*.js"
+    "lib/*.js",
+    "docs/**/*.js"
   ]
 }

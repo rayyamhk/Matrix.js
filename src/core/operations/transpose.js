@@ -2,11 +2,12 @@ const { INVALID_MATRIX } = require('../../Error');
 
 /**
  * Find the transpose of a matrix.
- * @param { Matrix } A - Any matrix
- * @return { Matrix } - Returns transpose of A
+ * @memberof Matrix
+ * @static
+ * @param { Matrix } A - Any Matrix
+ * @returns { Matrix } Returns transpose of A
  */
-
-module.exports = function transpose(A) {
+function transpose(A) {
   if (!(A instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -16,3 +17,5 @@ module.exports = function transpose(A) {
 
   return this.generate(col, row, (i, j) => matrix[j][i]);
 };
+
+module.exports = transpose;

@@ -1,11 +1,15 @@
 /**
- * Determine whether a square matrix is symmetric or not.
+ * Determines whether a square Matrix is symmetric or not.<br><br>
+ * 
+ * Symmetric Matrix is a square Matrix that is equal to its transpose.<br><br>
+ * 
  * The result is cached.
- * @param { Number } digit - Number of significant digits
- * @return { Boolean } - Returns true if the square matrix is symmetric
+ * @memberof Matrix
+ * @instance
+ * @param {number} [digit=8] - Number of significant digits
+ * @returns {boolean} Returns true if the square Matrix is symmetric
  */
-
-module.exports = function isSymmetric(digit = this._digit) {
+function isSymmetric(digit = this._digit) {
   if (this._isSymmetric !== undefined) {
     return this._isSymmetric;
   }
@@ -29,3 +33,5 @@ module.exports = function isSymmetric(digit = this._digit) {
   this._isSymmetric = true;
   return true;
 };
+
+module.exports = isSymmetric;

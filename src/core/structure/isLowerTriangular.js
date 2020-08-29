@@ -1,12 +1,18 @@
 /**
- * Determine whether a matrix is lower triangular matrix or not.
- * Note that it can be applied to any non-square matrix.
+ * Determines whether a Matrix is lower triangular Matrix or not.<br><br>
+ * 
+ * Lower triangular Matrix is a Matrix in which all the entries
+ * above the main diagonal are zero. Note that it can be applied
+ * to any non-square Matrix.<br><br>
+ * 
  * The result is cached.
- * @param { Number } digit - Number of significant digits
- * @return { Boolean } - Returns true if the matrix is lower triangular
+ * @memberof Matrix
+ * @instance
+ * @param {number} [digit=8] - Number of significant digits
+ * @returns {boolean} Returns true if the Matrix is lower triangular
  */
 
-module.exports = function isLowerTriangular(digit = this._digit) {
+function isLowerTriangular(digit = this._digit) {
   if (this._isLowerTriangular !== undefined) {
     return this._isLowerTriangular;
   }
@@ -31,3 +37,5 @@ module.exports = function isLowerTriangular(digit = this._digit) {
   this._isLowerTriangular = true;
   return true;
 };
+
+module.exports = isLowerTriangular;

@@ -1,14 +1,20 @@
 const { INVALID_MATRIX } = require('../../Error');
 
 /**
- * Determine whether two matrices are considered as equal.
- * @param { Matirx } A - Any Matrix
- * @param { Matirx } B - Any Matrix
- * @param { Integer } digit - Number of significant digits
- * @return { Boolean } - Returns true if two matrices are considered as same
+ * Determines whether two Matrices are considered as equal.<br><br>
+ * 
+ * The test criterion is Math.abs(x - y) < 1 / (10 ** digit * 2).
+ * For default value 5, it should be 5e-5.
+ * That means if the difference of two numbers is less than 5e-5,
+ * they are considered as same value.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any Matrix
+ * @param {Matrix} B - Any Matrix
+ * @param {number} digit - Number of significant digits
+ * @returns {boolean} Returns true if two Matrices are considered as same
  */
-
-module.exports = function isEqual(A, B, digit = 5) {
+function isEqual(A, B, digit = 5) {
   if (!(A instanceof this) || !(B instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -33,3 +39,5 @@ module.exports = function isEqual(A, B, digit = 5) {
   }
   return true;
 };
+
+module.exports = isEqual;

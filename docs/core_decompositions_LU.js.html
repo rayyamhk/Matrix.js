@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>core/decompositions/LU.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Matrix.html">Matrix</a><ul class='methods'><li data-type='method'><a href="Matrix.html#.LU">LU</a></li><li data-type='method'><a href="Matrix.html#.QR">QR</a></li><li data-type='method'><a href="Matrix.html#.backward">backward</a></li><li data-type='method'><a href="Matrix.html#.forward">forward</a></li><li data-type='method'><a href="Matrix.html#.solve">solve</a></li><li data-type='method'><a href="Matrix.html#.add">add</a></li><li data-type='method'><a href="Matrix.html#.inverse">inverse</a></li><li data-type='method'><a href="Matrix.html#.multiply">multiply</a></li><li data-type='method'><a href="Matrix.html#.pow">pow</a></li><li data-type='method'><a href="Matrix.html#.transpose">transpose</a></li><li data-type='method'><a href="Matrix.html#cond">cond</a></li><li data-type='method'><a href="Matrix.html#det">det</a></li><li data-type='method'><a href="Matrix.html#eigenvalues">eigenvalues</a></li><li data-type='method'><a href="Matrix.html#norm">norm</a></li><li data-type='method'><a href="Matrix.html#nullity">nullity</a></li><li data-type='method'><a href="Matrix.html#rank">rank</a></li><li data-type='method'><a href="Matrix.html#size">size</a></li><li data-type='method'><a href="Matrix.html#trace">trace</a></li><li data-type='method'><a href="Matrix.html#isDiagonal">isDiagonal</a></li><li data-type='method'><a href="Matrix.html#isLowerTriangular">isLowerTriangular</a></li><li data-type='method'><a href="Matrix.html#isOrthogonal">isOrthogonal</a></li><li data-type='method'><a href="Matrix.html#isSkewSymmetric">isSkewSymmetric</a></li><li data-type='method'><a href="Matrix.html#isSquare">isSquare</a></li><li data-type='method'><a href="Matrix.html#isSymmetric">isSymmetric</a></li><li data-type='method'><a href="Matrix.html#isUpperTriangular">isUpperTriangular</a></li><li data-type='method'><a href="Matrix.html#.clone">clone</a></li><li data-type='method'><a href="Matrix.html#.column">column</a></li><li data-type='method'><a href="Matrix.html#.diag">diag</a></li><li data-type='method'><a href="Matrix.html#.elementwise">elementwise</a></li><li data-type='method'><a href="Matrix.html#entry">entry</a></li><li data-type='method'><a href="Matrix.html#.generate">generate</a></li><li data-type='method'><a href="Matrix.html#.getDiag">getDiag</a></li><li data-type='method'><a href="Matrix.html#.getRandomMatrix">getRandomMatrix</a></li><li data-type='method'><a href="Matrix.html#.identity">identity</a></li><li data-type='method'><a href="Matrix.html#.isEqual">isEqual</a></li><li data-type='method'><a href="Matrix.html#.row">row</a></li><li data-type='method'><a href="Matrix.html#.submatrix">submatrix</a></li><li data-type='method'><a href="Matrix.html#toString">toString</a></li><li data-type='method'><a href="Matrix.html#.zero">zero</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">core/decompositions/LU.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { INVALID_MATRIX } = require('../../Error');
+
+/**
+ * Calculates the LUP decomposition of the Matrix,
+ * where L is lower triangular matrix which diagonal entries are always 1,
+ * U is upper triangular matrix, and P is permutation matrix.&lt;br>&lt;br>
+ * 
+ * It is implemented using Gaussian Elimination with Partial Pivoting in order to
+ * reduce the error caused by floating-point arithmetic.&lt;br>&lt;br>
+ * 
+ * Note that if optimized is true, P is a Permutation Array and both L and U are merged
+ * into one matrix in order to improve performance.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any matrix
+ * @param {boolean} [optimized=false] - Returns [P, LU] if it is true, [P, L, U] if it is false
+ * @returns {Matrix[]} The LUP decomposition of Matrix
+ */
+function LU(A, optimized = false) {
+  if (!(A instanceof this)) {
+    throw new Error(INVALID_MATRIX);
+  }
+
+  const [row, col] = A.size();
+  const size = Math.min(row, col);
+  const EPSILON = 1 / ((10 ** A._digit) * 2);
+
+  const permutation = initPermutation(row);
+  const copy = this.clone(A)._matrix;
+
+  for (let i = 0; i &lt; row - 1; i++) {
+    const currentCol = Math.min(i, col);
+
+    // apply Partial Pivoting
+    PartialPivoting(copy, permutation, currentCol, row, col);
+
+    const ith = permutation[i];
+    const pivot = copy[ith][currentCol];
+
+    if (Math.abs(pivot) &lt; EPSILON) {
+      continue;
+    }
+
+    for (let j = i + 1; j &lt; row; j++) {
+      const jth = permutation[j];
+      const entry = copy[jth][currentCol];
+
+      if (Math.abs(entry) >= EPSILON) {
+        const factor = entry / pivot;
+        for (let k = currentCol; k &lt; col; k++) {
+          copy[jth][k] -= factor * copy[ith][k];
+        }
+        copy[jth][currentCol] = factor;
+      }
+    }
+  }
+
+  const result = new Array(row);
+  for (let i = 0; i &lt; row; i++) {
+    result[i] = copy[permutation[i]];
+  }
+
+  if (optimized) {
+    return [permutation, new this(result)];
+  }
+
+  const P = this.generate(row, row, (i, j) => {
+    const idx = permutation[i];
+    if (j === idx) {
+      return 1;
+    }
+    return 0;
+  });
+  const L = this.generate(row, size, (i, j) => {
+    if (i === j) {
+      return 1;
+    }
+    if (i &lt; j) {
+      return 0;
+    }
+    return result[i][j];
+  });
+  const U = this.generate(size, col, (i, j) => {
+    if (i > j) {
+      return 0;
+    }
+    return result[i][j];
+  });
+
+  return [P, L, U];
+};
+
+function initPermutation(size) {
+  const permutation = new Array(size);
+  for (let i = 0; i &lt; size; i++) {
+    permutation[i] = i;
+  }
+  return permutation;
+}
+
+function PartialPivoting(matrix, permutation, pos, row, col) {
+  const currentCol = Math.min(pos, col);
+  let maxIdx = pos;
+  let max = Math.abs(matrix[permutation[pos]][currentCol]);
+  for (let i = pos + 1; i &lt; row; i++) {
+    const value = Math.abs(matrix[permutation[i]][currentCol]);
+    if (value > max) {
+      maxIdx = i;
+      max = value;
+    }
+  }
+  const t = permutation[pos];
+  permutation[pos] = permutation[maxIdx];
+  permutation[maxIdx] = t;
+}
+
+module.exports = LU;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Sat Aug 29 2020 23:56:23 GMT+0800 (GMT+08:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+</body>
+</html>

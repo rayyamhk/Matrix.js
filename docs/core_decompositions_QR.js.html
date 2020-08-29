@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>core/decompositions/QR.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Matrix.html">Matrix</a><ul class='methods'><li data-type='method'><a href="Matrix.html#.LU">LU</a></li><li data-type='method'><a href="Matrix.html#.QR">QR</a></li><li data-type='method'><a href="Matrix.html#.backward">backward</a></li><li data-type='method'><a href="Matrix.html#.forward">forward</a></li><li data-type='method'><a href="Matrix.html#.solve">solve</a></li><li data-type='method'><a href="Matrix.html#.add">add</a></li><li data-type='method'><a href="Matrix.html#.inverse">inverse</a></li><li data-type='method'><a href="Matrix.html#.multiply">multiply</a></li><li data-type='method'><a href="Matrix.html#.pow">pow</a></li><li data-type='method'><a href="Matrix.html#.transpose">transpose</a></li><li data-type='method'><a href="Matrix.html#cond">cond</a></li><li data-type='method'><a href="Matrix.html#det">det</a></li><li data-type='method'><a href="Matrix.html#eigenvalues">eigenvalues</a></li><li data-type='method'><a href="Matrix.html#norm">norm</a></li><li data-type='method'><a href="Matrix.html#nullity">nullity</a></li><li data-type='method'><a href="Matrix.html#rank">rank</a></li><li data-type='method'><a href="Matrix.html#size">size</a></li><li data-type='method'><a href="Matrix.html#trace">trace</a></li><li data-type='method'><a href="Matrix.html#isDiagonal">isDiagonal</a></li><li data-type='method'><a href="Matrix.html#isLowerTriangular">isLowerTriangular</a></li><li data-type='method'><a href="Matrix.html#isOrthogonal">isOrthogonal</a></li><li data-type='method'><a href="Matrix.html#isSkewSymmetric">isSkewSymmetric</a></li><li data-type='method'><a href="Matrix.html#isSquare">isSquare</a></li><li data-type='method'><a href="Matrix.html#isSymmetric">isSymmetric</a></li><li data-type='method'><a href="Matrix.html#isUpperTriangular">isUpperTriangular</a></li><li data-type='method'><a href="Matrix.html#.clone">clone</a></li><li data-type='method'><a href="Matrix.html#.column">column</a></li><li data-type='method'><a href="Matrix.html#.diag">diag</a></li><li data-type='method'><a href="Matrix.html#.elementwise">elementwise</a></li><li data-type='method'><a href="Matrix.html#entry">entry</a></li><li data-type='method'><a href="Matrix.html#.generate">generate</a></li><li data-type='method'><a href="Matrix.html#.getDiag">getDiag</a></li><li data-type='method'><a href="Matrix.html#.getRandomMatrix">getRandomMatrix</a></li><li data-type='method'><a href="Matrix.html#.identity">identity</a></li><li data-type='method'><a href="Matrix.html#.isEqual">isEqual</a></li><li data-type='method'><a href="Matrix.html#.row">row</a></li><li data-type='method'><a href="Matrix.html#.submatrix">submatrix</a></li><li data-type='method'><a href="Matrix.html#toString">toString</a></li><li data-type='method'><a href="Matrix.html#.zero">zero</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">core/decompositions/QR.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const { INVALID_MATRIX } = require('../../Error');
+
+/**
+ * Calculates the QR decomposition of the Matrix
+ * where Q is orthogonal matrix, R is upper triangular matrix.&lt;br>&lt;br>
+ * 
+ * The algorithm is implemented using Householder Transform instead of Gram–Schmidt process
+ * because the Householder Transform is more numerically stable.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any matrix
+ * @returns {Matrix[]} The QR decomposition of matrix in the form of [Q, R]
+ */
+function QR(A) {
+  if (!(A instanceof this)) {
+    throw new Error(INVALID_MATRIX);
+  }
+
+  const [row, col] = A.size();
+  const size = Math.min(row, col);
+  const EPSILON = 1 / ((10 ** A._digit) * 2);
+
+  const matrixR = this.clone(A)._matrix;
+  const matrixQ = this.identity(row)._matrix;
+
+  for (let j = 0; j &lt; size; j++) {
+    // if all entries below main diagonal are considered as zero, skip this round
+    let skip = true;
+    for (let i = j + 1; i &lt; row; i++) {
+      if (Math.abs(matrixR[i][j]) >= EPSILON) {
+        skip = false;
+        break;
+      }
+    }
+
+    if (!skip) {
+      // Apply Householder transform
+      let norm = 0;
+      for (let i = j; i &lt; row; i++) {
+        norm += matrixR[i][j] ** 2;
+      }
+      norm = Math.sqrt(norm);
+
+      // reduce floating point arithmatic error
+      let s = -1;
+      if (matrixR[j][j] &lt; 0) {
+        s = 1;
+      }
+      const u1 = matrixR[j][j] - s * norm;
+
+      let w = new Array(row - j);
+      for (let i = 0; i &lt; row - j; i++) {
+        w[i] = matrixR[i + j][j] / u1;
+      }
+      w[0] = 1;
+
+      const tau = (-1 * s * u1) / norm;
+
+      const subR = new Array(row - j);
+      for (let i = 0; i &lt; row - j; i++) {
+        const newRow = new Array(col);
+        for (let k = 0; k &lt; col; k++) {
+          newRow[k] = matrixR[j + i][k];
+        }
+        subR[i] = newRow;
+      }
+
+      for (let i = j; i &lt; row; i++) {
+        for (let k = 0; k &lt; col; k++) {
+          let summation = 0;
+          for (let m = 0; m &lt; row - j; m++) {
+            summation += subR[m][k] * w[m];
+          }
+          matrixR[i][k] = subR[i - j][k] - tau * w[i - j] * summation;
+        }
+      }
+
+      const subQ = new Array(row);
+      for (let i = 0; i &lt; row; i++) {
+        const newRow = new Array(row - j);
+        for (let k = 0; k &lt; row - j; k++) {
+          newRow[k] = matrixQ[i][j + k];
+        }
+        subQ[i] = newRow;
+      }
+
+      for (let i = 0; i &lt; row; i++) {
+        for (let k = j; k &lt; row; k++) {
+          let summation = 0;
+          for (let m = 0; m &lt; row - j; m++) {
+            summation += subQ[i][m] * w[m];
+          }
+          matrixQ[i][k] = subQ[i][k - j] - tau * w[k - j] * summation;
+        }
+      }
+    }
+  }
+
+  for (let i = 0; i &lt; row; i++) {
+    for (let j = 0; j &lt; col; j++) {
+      if (i > j) {
+        matrixR[i][j] = 0;
+      }
+    }
+  }
+
+  return [new this(matrixQ), new this(matrixR)];
+};
+
+module.exports = QR;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.5</a> on Sat Aug 29 2020 23:56:23 GMT+0800 (GMT+08:00) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+
+</body>
+</html>

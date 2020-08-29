@@ -1,12 +1,15 @@
 const { INVALID_SQUARE_MATRIX } = require('../../Error');
 
 /**
- * Find the trace of any square matrix.
+ * Calculates the trace of any square Matrix,
+ * which is the sum of all entries on the main diagonal.<br><br>
+ * 
  * The trace is cached.
- * @return { Number } - Returns the trace of the square matrix.
+ * @memberof Matrix
+ * @instance
+ * @returns {number} The trace of the square Matrix.
  */
-
-module.exports = function trace() {
+function trace() {
   const isSquare = this._isSquare !== undefined ? this._isSquare : this.isSquare();
   if (!isSquare) {
     throw new Error(INVALID_SQUARE_MATRIX);
@@ -26,3 +29,5 @@ module.exports = function trace() {
   this._trace = tr;
   return tr;
 };
+
+module.exports = trace;

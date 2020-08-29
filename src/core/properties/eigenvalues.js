@@ -6,15 +6,19 @@ const Matrix = require('../..');
 const { INVALID_SQUARE_MATRIX } = require('../../Error');
 
 /**
- * Find the eigenvalues of any square matrix using QR Algorithm.
+ * Calculates the eigenvalues of any square Matrix using QR Algorithm.<br><br>
+ * 
  * The eigenvalues can be either real number or complex number.
  * Note that all eigenvalues are instance of Complex,
- * for more details please visit https://github.com/rayyamhk/Complex.js
+ * for more details please visit [Complex.js]{@link https://github.com/rayyamhk/Complex.js}.<br><br>
+ * 
  * The eigenvalues are cached.
- * @return { Array } - Returns array of eigenvalues
+ * @memberof Matrix
+ * @instance
+ * @returns {Complex[]} Array of eigenvalues
  */
 
-module.exports = function eigenvalues() {
+function eigenvalues() {
   if (!this.isSquare()) {
     throw new Error(INVALID_SQUARE_MATRIX);
   }
@@ -276,3 +280,5 @@ function size2Eigenvalues(e11, e12, e21, e22) {
     eigen2: { re: re2, im: im2 },
   };
 }
+
+module.exports = eigenvalues;

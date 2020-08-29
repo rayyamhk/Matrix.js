@@ -2,13 +2,16 @@ const Matrix = require('../..');
 const { INVALID_P_NORM, SINGULAR_MATRIX, INVALID_SQUARE_MATRIX } = require('../../Error');
 
 /**
- * Find the condition number of square matrix with respect to different matrix norm.
+ * Calculations the condition number of square Matrix
+ * with respect to the choice of Matrix norm. 
+ * If the Matrix is singular, returns Infinity.<br><br>
  * The condition number is not cached.
- * @param { Number | String } p - Type of matrix norm, it can be 1, 2, Infinity or 'F'
- * @return { Number } - Returns the condition number of matrix
+ * @memberof Matrix
+ * @instance
+ * @param {(1|2|Infinity|'F')} p - Type of Matrix norm
+ * @returns {number} The condition number of Matrix
  */
-
-module.exports = function cond(p = 2) {
+function cond(p = 2) {
   if (p !== 1 && p !== 2 && p !== Infinity && p !== 'F') {
     throw new Error(INVALID_P_NORM);
   }
@@ -27,3 +30,5 @@ module.exports = function cond(p = 2) {
     throw error;
   }
 };
+
+module.exports = cond;

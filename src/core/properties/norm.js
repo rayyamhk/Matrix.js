@@ -1,17 +1,21 @@
-// 1-norm, 2-norm, Inf-norm, F-norm
-// Not cached
-
 const Matrix = require('../..');
 const { INVALID_P_NORM } = require('../../Error');
 
 /**
- * Find the matrix norm of any matrix with respect to the choice of norm.
+ * Calculates the Matrix norm of any Matrix with respect to the choice of norm.<br><br>
+ * 
+ * 1-norm: Maximum absolute column sum of the Matrix.<br>
+ * 2-norm: The largest singular value of Matrix.<br>
+ * Infinity-norm: Maximum absolute row sum of the Matrix.<br>
+ * Frobenius-norm: Euclidean norm invloving all entries.<br><br>
+ * 
  * The norms are not cached.
- * @param { Number | String } p - The choice of matrix norm, it can be 1, 2, Infinity or 'F'
- * @return { Number } - Returns p-norm of the matrix.
+ * @memberof Matrix
+ * @instance
+ * @param {(1|2|Infinity|'F')} p - The choice of Matrix norm
+ * @returns {number} The norm of the Matrix.
  */
-
-module.exports = function norm(p = 2) {
+function norm(p = 2) {
   const [row, col] = this.size();
 
   if (p !== 1 && p !== 2 && p !== Infinity && p !== 'F') {
@@ -72,3 +76,5 @@ module.exports = function norm(p = 2) {
   }
   return Math.sqrt(result);
 };
+
+module.exports = norm;

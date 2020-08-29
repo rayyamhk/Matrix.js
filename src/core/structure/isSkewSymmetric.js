@@ -1,11 +1,15 @@
 /**
- * Determine whether a square matrix is skew symmetric or not.
+ * Determines whether a square Matrix is skew symmetric or not.<br><br>
+ * 
+ * Skew symmetric Matrix is a square Matrix whose transpose equals its negative.<br><br>
+ * 
  * The result is cached.
- * @param { Number } digit - Number of significant digits
- * @return { Boolean } - Returns true if the square matrix is skew symmetric
+ * @memberof Matrix
+ * @instance
+ * @param {number} [digit=8] - Number of significant digits
+ * @returns {boolean} Returns true if the square Matrix is skew symmetric
  */
-
-module.exports = function isSkewSymmetric(digit = this._digit) {
+function isSkewSymmetric(digit = this._digit) {
   if (this._isSkewSymmetric !== undefined) {
     return this._isSkewSymmetric;
   }
@@ -35,3 +39,6 @@ module.exports = function isSkewSymmetric(digit = this._digit) {
   this._isSkewSymmetric = true;
   return true;
 };
+
+
+module.exports = isSkewSymmetric;

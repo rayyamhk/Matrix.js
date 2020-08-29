@@ -10,14 +10,15 @@ const {
 } = require('../../Error');
 
 /**
- * Generate a submatrix of a matrix.
- * @param { Matrix } A - Any matrix
- * @param { String | Number } rows - Rows expression
- * @param { String | Number } cols - Columns expression
- * @return { Matrix } - Returns submatrix of A
+ * Generates a submatrix of a matrix.
+ * @memberof Matrix
+ * @static
+ * @param {Matrix} A - Any matrix
+ * @param {string|number} rows - Rows expression
+ * @param {string|number} cols - Columns expression
+ * @returns {Matrix} Submatrix of A
  */
-
-module.exports = function submatrix(A, rows, cols) {
+function submatrix(A, rows, cols) {
   if (!(A instanceof this)) {
     throw new Error(INVALID_MATRIX);
   }
@@ -145,3 +146,5 @@ module.exports = function submatrix(A, rows, cols) {
 
   return new this(subMatrix);
 };
+
+module.exports = submatrix;
