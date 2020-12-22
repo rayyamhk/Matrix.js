@@ -277,6 +277,7 @@ A.det(); // -376
 ```
 
 #### eigenvalues()
+Note that eigenvalues are instance of Complex. For more details, please check the documentation [here](https://rayyamhk.github.io/Complex.js/)
 ```javascript
 const A = new Matrix([
   [13, -12, 6, -9],
@@ -565,10 +566,10 @@ const A = new Matrix([
 ]);
 
 Matrix.submatrix(A, 0, 1); // [[2]], row 0 & column 1
-Matrix.submatrix(A, '0:1', 1); [[1], [4]], row 0 + row 1 & column 1
-Matrix.submatrix(A, '0:1', '0:1'); [[1, 2], [4, 5]], row 0 + row 1 & column 0 + column 1
-Matrix.submatrix(A, ':', '1:2'); [[2, 3], [5, 6], [8,9]], all rows && column 1 + column 2
-Matrix.submatrix(A, ':', ':'); same with A
+Matrix.submatrix(A, '0:1', 1); // [[1], [4]], row 0 + row 1 & column 1
+Matrix.submatrix(A, '0:1', '0:1'); // [[1, 2], [4, 5]], row 0 + row 1 & column 0 + column 1
+Matrix.submatrix(A, ':', '1:2'); // [[2, 3], [5, 6], [8,9]], all rows && column 1 + column 2
+Matrix.submatrix(A, ':', ':'); // same with A
 ```
 
 #### toString()

@@ -10,7 +10,7 @@ const { INVALID_SQUARE_MATRIX } = require('../../Error');
  * 
  * The eigenvalues can be either real number or complex number.
  * Note that all eigenvalues are instance of Complex,
- * for more details please visit [Complex.js]{@link https://github.com/rayyamhk/Complex.js}.<br><br>
+ * for more details please visit [Complex.js]{@link https://rayyamhk.github.io/Complex.js}.<br><br>
  * 
  * The eigenvalues are cached.
  * @memberof Matrix
