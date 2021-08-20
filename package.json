@@ -1,6 +1,6 @@
 {
   "name": "@rayyamhk/matrix",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "author": "Ray Yam",
   "contributors": [
     "Ray Yam"
@@ -37,6 +37,7 @@
   "scripts": {
     "build": "npm run test && babel src --out-dir lib --ignore src/**/*.test.js",
     "test": "eslint && jest --testPathPattern=src/tests",
+    "test-single": "eslint && jest --testPathPattern=$1",
     "jsdoc": "jsdoc -c ./jsdoc.config.json ./README.md"
   },
   "husky": {

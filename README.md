@@ -496,6 +496,16 @@ A.entry(1, 0); // 3
 A.entry(1, 1); // 4
 ```
 
+#### flatten()
+```javascript
+const matrix = new Matrix([
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+]);
+const myArray = matrix.flatten(); // [1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
+
 #### fromArray(arr, row, col)
 ```javascript
 const myArray = [1, 2, 3, 4, 5, 6, 7, 8];
