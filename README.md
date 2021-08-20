@@ -496,6 +496,12 @@ A.entry(1, 0); // 3
 A.entry(1, 1); // 4
 ```
 
+#### fromArray(arr, row, col)
+```javascript
+const myArray = [1, 2, 3, 4, 5, 6, 7, 8];
+const matrix = Matrix.fromArray(myArray, 2, 4); // [[1, 2, 3, 4], [5, 6, 7, 8]]
+```
+
 #### generate(row, col, cb)
 ```javascript
 Matrix.generate(3, 3, () => 0); // 3 x 3 zero matrix
