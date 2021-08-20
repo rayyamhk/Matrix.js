@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>core/properties/det.js - Documentation</title>
+    <title>core/utils/fromArray.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,7 +34,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">core/properties/det.js</h1>
+    <h1 class="page-title">core/utils/fromArray.js</h1>
     
 
     
@@ -44,88 +44,25 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/* eslint-disable prefer-destructuring */
-const Matrix = require('../..');
-const { INVALID_SQUARE_MATRIX } = require('../../Error');
+            <pre class="prettyprint source linenums"><code>const { SIZE_INCOMPATIBLE } = require('../../Error');
 
 /**
- * Calculates the determinant of square Matrix.
- * If the Matrix size is larger than 3, it calculates the determinant using
- * LU decomposition, otherwise, using Leibniz Formula.&lt;br>&lt;br>
- * The determinant is cached.
+ * Generate a matrix from an array with compatible dimensions 
  * @memberof Matrix
- * @instance
- * @returns {number} Returns the determinant of square matrirx
+ * @static
+ * @param {Array} arr - Source array
+ * @param {number} row - Row of the matrix
+ * @param {number} col - Column of the matrix
+ * @returns {Matrix} Matrix
  */
-function det() {
-  if (!this.isSquare()) {
-    throw new Error(INVALID_SQUARE_MATRIX);
+function fromArray(arr, row, col) {
+  if (row * col !== arr.length) {
+    throw new Error(SIZE_INCOMPATIBLE);
   }
-
-  if (this._det !== undefined) {
-    return this._det;
-  }
-
-  const matrix = this._matrix;
-  const size = matrix.length;
-
-  if (size === 0) {
-    this._det = 1;
-    return 1; // the determinant of 0x0 matrix must be 1
-  }
-
-  if (size === 1) {
-    this._det = matrix[0][0];
-    return this._det;
-  }
-
-  if (size === 2) {
-    this._det = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-    return this._det;
-  }
-
-  if (size === 3) {
-    this._det = matrix[0][0] * matrix[1][1] * matrix[2][2]
-    + matrix[0][1] * matrix[1][2] * matrix[2][0]
-    + matrix[0][2] * matrix[1][0] * matrix[2][1]
-    - matrix[0][2] * matrix[1][1] * matrix[2][0]
-    - matrix[0][1] * matrix[1][0] * matrix[2][2]
-    - matrix[0][0] * matrix[1][2] * matrix[2][1];
-    return this._det;
-  }
-
-  const [P, LU] = Matrix.LU(this, true);
-  const matrixLU = LU._matrix;
-
-  // count whether the number of permutations &lt;swap> is odd or even
-  // O(n^2)
-  let swap = 0;
-  for (let i = 0; i &lt; size; i++) {
-    if (P[i] === i) {
-      continue;
-    }
-    while (P[i] !== i) {
-      const target = P[i];
-      P[i] = P[target];
-      P[target] = target;
-      swap++;
-    }
-  }
-
-  let result = 1;
-  for (let i = 0; i &lt; size; i++) {
-    result *= matrixLU[i][i];
-  }
-
-  if (swap % 2 === 1) {
-    this._det = result * -1;
-    return this._det;
-  }
-  this._det = result;
-  return result;
+  return this.generate(row, col, (i, j) => arr[i * col + j]);
 };
 
-module.exports = det;
+module.exports = fromArray;
 </code></pre>
         </article>
     </section>
