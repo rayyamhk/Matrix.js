@@ -67,6 +67,7 @@ Matrix.isEqual = require('./core/utils/isEqual');
 Matrix.row = require('./core/utils/row');
 Matrix.submatrix = require('./core/utils/submatrix');
 Matrix.zero = require('./core/utils/zero');
+Matrix.fromArray = require('./core/utils/fromArray');
 
 Matrix.prototype.entry = require('./core/utils/entry');
 Matrix.prototype.toString = require('./core/utils/toString');
